@@ -1,0 +1,125 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="icon" href="{% static 'img/icons/favicon.ico' %}" type="image/x-icon">
+</head>
+<body>
+    <div class="wrapper">
+        <header class="header">
+            <div class="inner">
+                <div class="header-row">
+                    <div class="header-nav">
+                        <ul class="header-nav-menu">
+                            <a class="header-nav-menu-item" href="#"><li>Оплата и доставка</li></a>
+                            <a class="header-nav-menu-item" href="#"><li>Возврат и обмен</li></a>
+                            <a class="header-nav-menu-item" href="#"><li>О нас</li></a>
+                            <a class="header-nav-menu-item" href="#"><li>Контакты</li></a>
+                        </ul>
+                    </div>
+                    <div class="header-social-phone">
+                        <a href="https://vk.com/katsuyoriiii"><img class="header-social-phone-img" src="{% static 'img/icons/icon-vk.png' %}" alt="VK"></a>
+                        <a href="https://www.tiktok.com/"><img class="header-social-phone-img" src="{% static 'img/icons/icon-instagram.png' %}" alt="Instagram"></a>
+                        <a href="https://t.me/katsuyorii"><img class="header-social-phone-img" src="{% static 'img/icons/icon-telegram.png' %}" alt="Telegram"></a>
+                        <ul class="header-social-phone-list">
+                            <a class="header-social-phone-list-phone" href="tel:79179333966">+7 (917) 933-39-66</a>
+                        </ul>
+                    </div>
+                </div>
+                
+            </div>
+        </header>
+        <main class="main">
+            <div class="inner">
+                <div class="main-row">
+                    <div class="main-row-left">
+                        <a href="#"><img src="{% static 'img/logo.png' %}" alt="Logo" class="main-row-left-logo"></a>
+                        <a class="main-row-left-btn" href="#">Каталог</a>
+                        <form action="{% url 'search' %}" method="GET">
+                            <div id="file-info" class='search-form'>
+                                <input name="filter" type="text" placeholder='Поиск...' />
+                                <button type="submit"><img class="search-form-img" src="{% static 'img/search.svg' %}" alt="Search"></button>
+                              </div>
+                        </form>
+                    </div>
+                    <div class="main-row-right">
+                        <div class="main-row-right-item">
+                            <a class="main-row-right-item-link" href="#">
+                                <img class="main-row-right-item-img" src="{% static 'img/icons/icon-love.png' %}" alt="Love">
+                                <p class="main-row-right-item-text">Избранное</p>
+                            </a>
+                        </div>
+                        <div class="main-row-right-item"> 
+                            <a class="main-row-right-item-link" href="#">
+                                <img class="main-row-right-item-img" src="{% static 'img/icons/icon-zakaz.png' %}" alt="Orders">
+                                <p class="main-row-right-item-text">Заказы</p>
+                            </a>
+                        </div>
+                        <div class="main-row-right-item">
+                            <a class="main-row-right-item-link" href="#">
+                                <img class="main-row-right-item-img-cart" src="{% static 'img/icons/icon-cart.png' %}" alt="Cart">
+                                <p class="main-row-right-item-text">Корзина</p>
+                            </a>
+                        </div>  
+                        <div class="main-row-right-item">
+                                <a class="main-row-right-item-link" href="#">
+                                    <img class="main-row-right-item-img" src="{% static 'img/icons/icon-user.png' %}" alt="User">
+                                    <p class="main-row-right-item-text">Вход</p>
+                                </a>
+                        </div>
+                    </div>
+                </div>
+
+                {% block content %}
+                {% endblock content %}
+
+            </div>
+        </main>
+        <footer class="footer">
+            <div class="inner">
+                <div class="footer-row">
+                    <div class="footer-row-left">
+                        <div class="footer-block">
+                            <div class="header-nav">
+                                <ul class="header-nav-menu">
+                                    <a class="header-nav-menu-item" href="#"><li>Оплата и доставка</li></a>
+                                    <a class="header-nav-menu-item" href="#"><li>Возврат и обмен</li></a>
+                                    <a class="header-nav-menu-item" href="#"><li>О нас</li></a>
+                                    <a class="header-nav-menu-item" href="#"><li>Контакты</li></a>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="footer-block-contacts">
+                            <a href="https://vk.com/katsuyoriiii"><img class="footer-block-contacts-item" src="{% static 'img/icons/icon-vk.png' %}" alt="VK"></a>
+                            <a href="https://www.tiktok.com/"><img class="footer-block-contacts-item" src="{% static 'img/icons/icon-instagram.png' %}" alt="INSTAGRAM"></a>
+                            <a href="https://t.me/katsuyorii"><img class="footer-block-contacts-item" src="{% static 'img/icons/icon-telegram.png' %}" alt="Telegram"></a>
+                            <a class="header-social-phone-list-phone" href="tel:79179333966">+7 (917) 933-39-66</a>
+                        </div>
+                        <div class="footer-block-info">
+                            <p class="footer-block-info-text">© Аниме магазин в России OTAKU World 2023-2024</p>
+                            <p class="footer-block-info-text">Все права защищены</p>
+                            <p class="footer-block-info-text">Интернет-магазин аниме аксессуаров, фигурок и манги</p>
+                        </div>
+                    </div>
+                    <div class="footer-row-right">
+                        <div class="footer-row-right-pays">
+                            <img class="pays-img" src="{% static 'img/icons/visa-icon.svg' %}" alt="VISA">
+                            <img class="pays-img" src="{% static 'img/icons/mastercard-icon.svg' %}" alt="MASTERCARD">
+                            <img class="pays-img" src="{% static 'img/icons/mir-icon.svg' %}" alt="MIR">
+                            <img class="pays-img-u" src="{% static 'img/icons/iokassa.svg' %}" alt="UKASSA">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </div>
+</body>
+</html>
