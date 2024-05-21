@@ -1,3 +1,12 @@
 from django.contrib import admin
+from .models import Category, Genre, Source, Product, Property, ProductProperty
 
-# Register your models here.
+admin.site.register(Category)
+admin.site.register(Genre)
+admin.site.register(Source)
+admin.site.register(Product)
+admin.site.register(Property)
+admin.site.register(ProductProperty)
+
+
+
