@@ -14,6 +14,8 @@ class IndexView(TemplateView):
         context['slider_images'] = SliderImage.objects.all()
         context['news_product_images'] = NewsProductImage.objects.first()
 
+        return context
+
 
 '''
     Класс-представление для страницы - "О нас".
