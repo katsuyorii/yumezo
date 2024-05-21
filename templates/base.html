@@ -42,7 +42,7 @@
                 <div class="main-row">
                     <div class="main-row-left">
                         <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="Logo" class="main-row-left-logo"></a>
-                        <a class="main-row-left-btn" href="#">Каталог</a>
+                        <a class="main-row-left-btn" href="{% url 'catalog' %}">Каталог</a>
                         <form action="#" method="GET">
                             <div id="file-info" class='search-form'>
                                 <input name="filter" type="text" placeholder='Поиск...' />
