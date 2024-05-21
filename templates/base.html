@@ -19,10 +19,10 @@
                 <div class="header-row">
                     <div class="header-nav">
                         <ul class="header-nav-menu">
-                            <a class="header-nav-menu-item" href="#"><li>Оплата и доставка</li></a>
-                            <a class="header-nav-menu-item" href="#"><li>Возврат и обмен</li></a>
-                            <a class="header-nav-menu-item" href="#"><li>О нас</li></a>
-                            <a class="header-nav-menu-item" href="#"><li>Контакты</li></a>
+                            <a class="header-nav-menu-item" href="{% url 'delivery' %}"><li>Оплата и доставка</li></a>
+                            <a class="header-nav-menu-item" href="{% url 'refund' %}"><li>Возврат и обмен</li></a>
+                            <a class="header-nav-menu-item" href="{% url 'about' %}"><li>О нас</li></a>
+                            <a class="header-nav-menu-item" href="{% url 'contacts' %}"><li>Контакты</li></a>
                         </ul>
                     </div>
                     <div class="header-social-phone">
@@ -41,7 +41,7 @@
             <div class="inner">
                 <div class="main-row">
                     <div class="main-row-left">
-                        <a href="#"><img src="{% static 'img/logo.png' %}" alt="Logo" class="main-row-left-logo"></a>
+                        <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="Logo" class="main-row-left-logo"></a>
                         <a class="main-row-left-btn" href="#">Каталог</a>
                         <form action="#" method="GET">
                             <div id="file-info" class='search-form'>
@@ -90,10 +90,10 @@
                         <div class="footer-block">
                             <div class="header-nav">
                                 <ul class="header-nav-menu">
-                                    <a class="header-nav-menu-item" href="#"><li>Оплата и доставка</li></a>
-                                    <a class="header-nav-menu-item" href="#"><li>Возврат и обмен</li></a>
-                                    <a class="header-nav-menu-item" href="#"><li>О нас</li></a>
-                                    <a class="header-nav-menu-item" href="#"><li>Контакты</li></a>
+                                    <a class="header-nav-menu-item" href="{% url 'delivery' %}"><li>Оплата и доставка</li></a>
+                                    <a class="header-nav-menu-item" href="{% url 'refund' %}"><li>Возврат и обмен</li></a>
+                                    <a class="header-nav-menu-item" href="{% url 'about' %}"><li>О нас</li></a>
+                                    <a class="header-nav-menu-item" href="{% url 'contacts' %}"><li>Контакты</li></a>
                                 </ul>
                             </div>
                         </div>
