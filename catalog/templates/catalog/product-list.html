@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="catalog-list-main-row-link">
+        <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{% url 'catalog' %}">Каталог</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{{ selected_category.get_absolute_url }}">{{ selected_category.name }}</a>
+    </div>
+    <h1 class="catalog-list-main-title">{{ selected_category.name }}</h1>
+
+    <div class="product-list-main-row">
+        <div class="product-list-main-row-filters">
+            <form method="GET">
+                <p class="product-list-main-filters-title">Цена</p>
+                <div class="product-list-main-filters-price-row">
+                    <input class="product-list-main-filters-price" type="text" name="min_price" value="0">
+                    <input class="product-list-main-filters-price" type="text" name="max_price" value="0">
+                </div>
+                <p class="product-list-main-filters-title">Жанры</p>
+                
+                    <div class="product-list-main-filters-checkbox-row">
+                        <input class="product-list-main-filters-checkbox-genre" type="checkbox" name="genre" value="Драма">
+                        <p class="product-list-main-filters-checkbox-text">Драма</p>
+                    </div>
+                
+
+                <p class="product-list-main-filters-title">Источники</p>
+                
+                    <div class="product-list-main-filters-checkbox-row">
+                        <input class="product-list-main-filters-checkbox-source" type="checkbox" name="source" value="Naruto">
+                        <p class="product-list-main-filters-checkbox-text">Naruto</p>
+                    </div>
+                
+            </form>
+        </div>
+
+        <div class="product-list-main-row-products">
+            <div class="product-list-main-row-products-grid">
+                {% for product in products %}
+                <div class="product-list-main-row-products-grid-item">
+                    <a href="#">
+                        <img class="product-list-main-row-products-grid-item-img" src="{{ product.image.url }}" alt="Logo">
+                        <a class="product-list-main-row-products-grid-item-name" href="#">{{ product.name }}</a>
+                        {% if product.discount %}
+                            <div class="prices">
+                                <p class="product-list-main-row-products-grid-item-price-sale">{{ product.price }} ₽</p>
+                                <p class="product-list-main-row-products-grid-item-price-through">{{ product.price_discount }} ₽</p>
+                            </div>
+                        {% else %}
+                            <p class="product-list-main-row-products-grid-item-price">{{ product.price }} ₽</p>
+                        {% endif %}
+                        <a class="product-list-main-row-products-grid-item-btn" href="#">В корзину</a>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+            
+            {% if is_paginated %}
+                <div class="product-list-main-pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">«</a>
+                    {% endif %}
+                    
+                    {% for page in paginator.page_range %}
+                        {% if page == page_obj.number %}
+                            <a class="active" href="?page={{ page }}">{{ page }}</a>
+                        {% else %}
+                            <a href="?page={{ page }}">{{ page }}</a>
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">»</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

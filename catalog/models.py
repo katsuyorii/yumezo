@@ -1,4 +1,5 @@
 from django.db import models
+from django.urls import reverse
 from pytils.translit import slugify
 
 
@@ -22,6 +23,9 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         self.slug = slugify(self.name)
         super().save(*args, **kwargs)
+
+    def get_absolute_url(self):
+        return reverse('product_list', kwargs={"category_slug": self.slug})
 
     def __str__(self):
         return self.name

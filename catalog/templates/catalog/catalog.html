@@ -11,10 +11,10 @@
     <div class="catalog-list-main-categories">
         {% for category in categories %}
         <div class="catalog-list-main-categories-item">
-            <a href="#">
+            <a href="{{ category.get_absolute_url }}">
                 <img class="catalog-list-main-categories-item-img" src="{{ category.image.url }}" alt="{{ category.name }}">
             </a>
-            <a class="catalog-list-main-categories-item-text" href="#">{{ category.name }}</a>
+            <a class="catalog-list-main-categories-item-text" href="{{ category.get_absolute_url }}">{{ category.name }}</a>
         </div>
         {% endfor %}
     </div>
