@@ -1,18 +1,26 @@
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, ListView
 from .models import SliderImage, NewsProductImage
-
+from catalog.models import Product
 
 '''
     Класс-представление для страницы - "Главная".
 '''
-class IndexView(TemplateView):
+class IndexView(ListView):
+    model = Product
     template_name = 'core/index.html'
+    context_object_name = 'hits'
+
+    def get_queryset(self):
+        queryset = Product.objects.filter(is_active=True).order_by('-count_sales')[:5].select_related('category')
+
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Аниме магазин Yumezo'
         context['slider_images'] = SliderImage.objects.all()
         context['news_product_images'] = NewsProductImage.objects.first()
+        context['manga_list'] = Product.objects.filter(category__slug='manga', is_active=True)[:5].select_related('category')
 
         return context
 

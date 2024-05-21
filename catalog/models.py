@@ -114,7 +114,7 @@ class Product(models.Model):
     # Метод преобразования цены с учетом скидки, если она есть
     def price_discount(self):
         if self.discount:
-            return self.price + ((self.price * self.discount) / 100)
+            return int(self.price + ((self.price * self.discount) / 100))
         
         return self.price
     

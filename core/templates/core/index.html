@@ -2,16 +2,67 @@
 {% load static %}
 
 {% block content %}
-<div class="main-banner-row">
-    <div class="main-banner-row-slider">
-        <div class="slider">
-            {% for slider_image in slider_images %}
-                <img src="{{ slider_image.image_slider.url }}" alt="Изображение слайдера" class="slide" alt="Изображение слайдера">
+    <div class="main-banner-row">
+        <div class="main-banner-row-slider">
+            <div class="slider">
+                {% for slider_image in slider_images %}
+                    <img src="{{ slider_image.image_slider.url }}" alt="Изображение слайдера" class="slide" alt="Изображение слайдера">
+                {% endfor %}
+            </div>
+        </div>
+        <div class="main-banner-row-new">
+            <img class="main-banner-row-new-img" src="{{ news_product_images.image_news_product.url }}" alt="Новинка">
+        </div>
+    </div>
+
+    <div class="main-roww">
+        <a class="main-hits-title">Хиты продаж</a>
+        <div class="main-hits-row">
+            {% for hit in hits %}
+                <div class="main-hits-row-card">
+                    <a href="#">
+                        <img class="main-hits-row-card-img" src="{{ hit.image.url }}" alt="Logo Card">
+                        <br>
+                        <a class="main-hits-row-card-name" href="#">{{ hit.name }}</a>
+                    </a>
+                    {% if hit.discount %}
+                        <div class="prices">
+                            <a class="main-hits-row-card-price-sale"> {{ hit.price }} ₽</a>
+                            <p class="main-hits-row-card-price-through"> {{ hit.price_discount }} ₽</p>    
+                        </div>
+                    {% else %}
+                        <p class="main-hits-row-card-price">{{ hit.price }} ₽</p>
+                    {% endif %}
+                    <a class="main-hits-row-card-btn" href="#">В корзину</a>
+                </div>
             {% endfor %}
         </div>
     </div>
-    <div class="main-banner-row-new">
-        <img class="main-banner-row-new-img" src="{{ news_product_images.image_news_product.url }}" alt="Новинка">
+
+    <div class="main-roww">
+        <a class="main-hits-title">Манга</a>
+        <div class="main-hits-row">
+            {% for manga in manga_list %}
+                <div class="main-hits-row-card">
+                    <a href="#">
+                        <img class="main-hits-row-card-img" src="{{ manga.image.url }}" alt="Logo Card">
+                        <br>
+                        <a class="main-hits-row-card-name" href="#">{{ manga.name }}</a>
+                    </a>
+                    {% if manga.discount %}
+                        <div class="prices">
+                            <a class="main-hits-row-card-price-sale"> {{ manga.price }} ₽</a>
+                            <p class="main-hits-row-card-price-through"> {{ manga.price_discount }} ₽</p>    
+                        </div>
+                    {% else %}
+                        <p class="main-hits-row-card-price">{{ manga.price }} ₽</p>
+                    {% endif %}
+                    <a class="main-hits-row-card-btn" href="#">В корзину</a>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="show-all-row">
+            <a class="main-hits-show-all" href="#">Посмотреть все товары</a>
+        </div>
     </div>
-</div>
 {% endblock content %}
