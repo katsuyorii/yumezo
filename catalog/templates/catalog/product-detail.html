@@ -141,7 +141,7 @@
                         <h1 class="product-detail-reviews-username">{{ comment.user.username }}</h1>
                         <p class="product-detail-reviews-date">{{ comment.create_date }}</p>
                         {% if comment.user == user %}
-                            <a href="#" class="product-detail-edit">Редактировать</a>
+                            <a href="{% url 'edit_comment' comment_id=comment.pk %}" class="product-detail-edit">Редактировать</a>
                             <a href="{% url 'delete_comment' comment_id=comment.pk %}" class="product-detail-delete">Удалить</a>
                         {% endif %}
                     </div> 

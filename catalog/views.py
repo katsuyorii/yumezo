@@ -5,13 +5,13 @@ from django.urls import reverse_lazy
 from django.db import transaction
 
 from django.views import View
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, UpdateView
 from django.views.generic.edit import FormMixin
 
 from django.shortcuts import get_object_or_404, redirect
 
 from .models import Category, Product, ProductProperty, Comment
-from .forms import AddNewCommentForm
+from .forms import AddNewCommentForm, EditCommentForm
 
 from django.contrib.auth.models import AnonymousUser
 
@@ -120,4 +120,37 @@ class CommentDeleteView(View):
         comment.product.update_rating()
 
         return redirect(reverse_lazy('product_detail', kwargs = {'category_slug': comment.product.category.slug, 'product_slug': comment.product.slug}))
+    
+
+# Класс-представление для редактирования комментария
+class CommentEditView(UpdateView):
+    model = Comment
+    form_class = EditCommentForm
+    template_name = 'catalog/review-edit.html'
+    context_object_name = 'comment'
+    pk_url_kwarg = 'comment_id'
+
+    def get_queryset(self):
+        queryset = Comment.objects.filter(pk=self.kwargs['comment_id']).select_related('product__category')
+
+        return queryset
+
+    @transaction.atomic()
+    def form_valid(self, form):
+        self.object = form.save()
+        self.object.product.update_rating()
+        
+        return HttpResponseRedirect(self.get_success_url())
+    
+    def form_invalid(self, form):
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Редактирование комментария'
+
+            return context
+
+    def get_success_url(self):
+        return reverse_lazy('product_detail', kwargs = {'category_slug': self.object.product.category.slug, 'product_slug': self.object.product.slug})
     
