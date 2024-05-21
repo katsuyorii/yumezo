@@ -1,0 +1,161 @@
+{% extends "base.html" %}
+{% load static %}
+{% load range_values %}
+{% load review_declination %}
+
+{% block content %}
+    <div class="catalog-list-main-row-link">
+        <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{% url 'catalog' %}">Каталог</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+    </div>
+    <h2 class="product-detail-title">{{ product.name }}</h2>
+    <div class="product-detail-stars">
+        <div class="product-detail-stars-row">
+            <div class="rating-result">
+                {% for _ in product.rating|range_values_star %}
+                    <span class="active"></span>
+                {% endfor %}
+                {% for _ in product.rating|range_values_no_star %}
+                    <span></span>
+                {% endfor %}
+            </div>
+            <a class="product-detail-stars-row-link" href="#review">{{ count_reviews }} {{ count_reviews|review_declination }}</a>
+        </div>
+        <div class="product-detail-stars-forever">
+            {% if not user.is_authenticated %}  
+                <img id='forever' src="{% static 'img/icons/icon-love.png' %}" alt="Forever">
+                <a href="#" class="product-detail-stars-forever-link-not-ajax">В избранное</a>
+            {% else %}
+                
+                    <img id='forever' src="{% static 'img/icons/icon-love.png' %}" alt="Forever">
+                    <a href="#" class="product-detail-stars-forever-link">В избранное</a>
+                
+            {% endif %}
+        </div>
+    </div>
+    <div class="product-detail-main">
+        <div class="product-detail-main-left">
+            <img class="product-detail-main-left-img" src="{{ product.image.url }}" alt="Poster">
+            <div class="product-detail-main-left-text">
+                    <h2 class="product-detail-main-left-text-engtitle">{{ product.name_eng }}</h2>
+                    <p class="product-detail-main-left-text-p">Категория: <a class="product-detail-main-left-text-link" href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a></p>
+                    <p class="product-detail-main-left-text-p">Источник: <a class="product-detail-main-left-text-link" href="#">{{ product.source.name }}</a></p>
+                    {% for property in proretries %}
+                        <p class="product-detail-main-left-text-p">{{ property.property.name }}: {% if property.value_string %} {{ property.value_string }} {% elif property.value_integer %} {{ property.value_integer }} {% else %} {% for genre in property.value_genres.all %} <a class="product-detail-main-left-text-link" href="#">{{ genre.name }}</a> {% if not forloop.last %},{% endif %} {% endfor %} {% endif %}</p>
+                    {% endfor %}
+            </div>
+        </div>
+        <div class="product-detail-main-right">
+            {% if product.discount %}
+                <p class="product-detail-main-right-orig">Оригинальная цена</p>
+                <p class="product-detail-main-right-orig-price">{{product.price_discount }} ₽</p>
+                <p class="product-detail-main-right-orig">Специальная цена</p>
+                <p class="product-detail-main-right-spec-price">{{product.price }} ₽</p>
+            {% else %}
+                <p class="product-detail-main-right-orig">Оригинальная цена</p>
+                <p class="product-detail-main-right-spec-price">{{product.price }} ₽</p>
+            {% endif %}
+            <a href="#" class="product-detail-main-right-btn">В корзину</a>
+            {% if product.category.slug == 'odezhda' %}
+            <div class="product-detail-clothers-size">
+                <div class="product-detail-clothers-size-top">
+                    <p class="product-detail-clothers-size-pole">Пол</p>
+                    <select class="product-detail-clothers-size-pole-select" name="" id="">
+                        <option selected disabled hidden>-</option>
+                        <option value="">М</option>
+                        <option value="">Ж</option>
+                    </select>
+                </div>
+                <div class="product-detail-clothers-size-bottom">
+                    <p class="product-detail-clothers-size-pole">Размер</p>
+                    <select class="product-detail-clothers-size-size-select" name="" id="">
+                        <option selected disabled hidden>-</option>
+                        <option value="">S</option>
+                        <option value="">M</option>
+                        <option value="">L</option>
+                        <option value="">XL</option>
+                        <option value="">XXL</option>
+                    </select>
+                </div>
+            </div>
+            <a onclick="openPopup()" class="product-detail-sizes-table">Таблица размеров</a>
+            {% endif %}
+        </div>
+    </div>
+    <div class="product-detail-desc">
+        <h2 class="product-detail-desc-h">Описание</h2>
+        <p class="product-detail-desc-text">{{ product.description }}</p>
+    </div>
+    <div class="product-detail-reviews">
+        <h2 id="review" class="product-detail-reviews-h">Отзывы</h2>
+        {% if user.is_authenticated %}
+            {% if not is_user_comment %}
+                <form method="POST">
+                    {% csrf_token %}
+                    <textarea class="product-detail-reviews-textarea" placeholder="Оставьте комментарий..." name="review_text" id="id_review_text"></textarea>
+                    {% for error in form.review_text.errors %}
+                        <p class="product-detail-reviews-error">* {{ error }} </p>
+                    {% endfor %}
+                    <div class="product-detail-reviews-row">
+                        <div class="product-detail-reviews-stars">
+                            <p>Ваша оценка:</p>
+                            <div class="rating-area">
+                                <input type="radio" id="id_grade_five" name="grade" value="5">
+                                <label for="id_grade_five" title="Оценка «5»"></label>	
+                                <input type="radio" id="id_grade_four" name="grade" value="4">
+                                <label for="id_grade_four" title="Оценка «4»"></label>    
+                                <input type="radio" id="id_grade_three" name="grade" value="3">
+                                <label for="id_grade_three" title="Оценка «3»"></label>  
+                                <input type="radio" id="id_grade_two" name="grade" value="2">
+                                <label for="id_grade_two" title="Оценка «2»"></label>    
+                                <input type="radio" id="id_grade_one" name="grade" value="1">
+                                <label for="id_grade_one" title="Оценка «1»"></label>
+                            </div>
+                        </div>
+                        <button type="submit" class="product-detail-reviews-link">Отправить</a>
+                    </div>
+                    {% for error in form.grade.errors %}
+                        <p class="product-detail-reviews-error">*{{ error }} </p>
+                    {% endfor %}
+                </form>
+
+                <div class="product-detail-reviews-line"></div>
+            {% endif %}
+        {% endif %}
+        {% for comment in comments %}
+            <div class="product-detail-reviews-item">
+                <span class="circle-img-product">
+                    {% if comment.user.image %}
+                        <img class="profile-row-links-img" src="{{ comment.user.image.url }}" alt="Profile Logo">
+                    {% else %}
+                        <img class="profile-row-links-img" src="{% static 'img/default.png' %}" alt="Profile Logo">
+                    {% endif %}
+                </span>
+                <div class="product-detail-reviews-item-column">
+                    <div class="product-detail-reviews-name">
+                        <h1 class="product-detail-reviews-username">{{ comment.user.username }}</h1>
+                        <p class="product-detail-reviews-date">{{ comment.create_date }}</p>
+                        {% if comment.user == user %}
+                            <a href="#" class="product-detail-edit">Редактировать</a>
+                            <a href="#" class="product-detail-delete">Удалить</a>
+                        {% endif %}
+                    </div> 
+                    <div class="rating-result">
+                        {% for _ in comment.grade|range_values_star %}
+                            <span class="active"></span>
+                        {% endfor %}
+                        {% for _ in comment.grade|range_values_no_star %}
+                            <span></span>
+                        {% endfor %}
+                    </div>
+                    <p class="product-detail-reviews-item-desc">{{ comment.review_text }}</p>
+                </div> 
+            </div>
+        {% endfor %}
+    </div>
+{% endblock content %}

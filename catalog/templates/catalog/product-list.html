@@ -41,9 +41,9 @@
             <div class="product-list-main-row-products-grid">
                 {% for product in products %}
                 <div class="product-list-main-row-products-grid-item">
-                    <a href="#">
+                    <a href="{{ product.get_absolute_url }}">
                         <img class="product-list-main-row-products-grid-item-img" src="{{ product.image.url }}" alt="Logo">
-                        <a class="product-list-main-row-products-grid-item-name" href="#">{{ product.name }}</a>
+                        <a class="product-list-main-row-products-grid-item-name" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
                         {% if product.discount %}
                             <div class="prices">
                                 <p class="product-list-main-row-products-grid-item-price-sale">{{ product.price }} ₽</p>

@@ -1,6 +1,8 @@
 from django.db import models
 from django.urls import reverse
 from pytils.translit import slugify
+from users.models import User
+from django.db.models import Avg
 
 
 '''
@@ -115,6 +117,9 @@ class Product(models.Model):
     def __str__(self):
         return self.name
     
+    def get_absolute_url(self):
+        return reverse('product_detail', kwargs={"category_slug": self.category.slug, "product_slug": self.slug})
+    
     # Метод преобразования цены с учетом скидки, если она есть
     def price_discount(self):
         if self.discount:
@@ -122,6 +127,17 @@ class Product(models.Model):
         
         return self.price
     
+
+    # Метод рассчета рейтинга
+    def update_rating(self):
+        average_grade = Comment.objects.filter(product__slug=self.slug).aggregate(avg_grade=Avg('grade'))['avg_grade']
+        
+        if average_grade is None:
+            self.rating = 0
+        else:
+            self.rating = average_grade
+            
+        self.save()
 
 '''
     Модель описывающая специфические для разных категорий характеристики товаров (прим. "Вес", "Размер", "Длина")
@@ -153,3 +169,21 @@ class ProductProperty(models.Model):
 
     def __str__(self):
         return f'{self.product.name} | {self.property.name}'
+    
+
+'''
+    Модель описывающая комментарии пользователей
+'''
+class Comment(models.Model):
+    product = models.ForeignKey(verbose_name='Продукт', to=Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(verbose_name='Пользователь', to=User, on_delete=models.CASCADE)
+    review_text = models.TextField(verbose_name='Текст комментария')
+    create_date = models.DateTimeField(verbose_name='Дата создания комментария', auto_now_add=True)
+    grade = models.SmallIntegerField(verbose_name='Оценка пользователя')
+
+    class Meta:
+        verbose_name = 'Комментарий'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return f'{self.product.name} | {self.user.username}'
