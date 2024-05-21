@@ -14,6 +14,7 @@ from .models import Category, Product, ProductProperty, Comment
 from .forms import AddNewCommentForm, EditCommentForm
 
 from django.contrib.auth.models import AnonymousUser
+from django.contrib import messages
 
 
 '''
@@ -103,9 +104,11 @@ class ProductDetailView(DetailView, FormMixin):
             return self.form_invalid(form)
         
     def form_valid(self, form):
+        messages.success(self.request, 'Ваш комментарий успешно добавлен!')
         return super().form_valid(form)
     
     def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка при заполнении формы!')
         return HttpResponseRedirect(self.get_success_url())
     
 
@@ -118,6 +121,8 @@ class CommentDeleteView(View):
         comment = get_object_or_404(Comment, pk=comment_id)
         comment.delete()
         comment.product.update_rating()
+
+        messages.success(request, 'Ваш комментарий успешно удален!')
 
         return redirect(reverse_lazy('product_detail', kwargs = {'category_slug': comment.product.category.slug, 'product_slug': comment.product.slug}))
     
@@ -140,9 +145,11 @@ class CommentEditView(UpdateView):
         self.object = form.save()
         self.object.product.update_rating()
         
+        messages.success(self.request, 'Ваш комментарий успешно редактирован!')
         return HttpResponseRedirect(self.get_success_url())
     
     def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка при заполнении формы!')
         return super().form_invalid(form)
     
     def get_context_data(self, **kwargs):

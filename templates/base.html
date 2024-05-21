@@ -121,7 +121,19 @@
             </div>
         </footer>
     </div>
+    
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.tags %}
+                <div id="popup" class="popup_{{ message.tags }}">
+                    <p>{{ message }}</p>
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="{% static 'js/slider.js' %}"></script>
+    <script src="{% static 'js/popup.js' %}"></script>
 </body>
 </html>
