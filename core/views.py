@@ -3,7 +3,7 @@ from .models import SliderImage, NewsProductImage
 
 
 '''
-Класс-представление для страницы - "Главная".
+    Класс-представление для страницы - "Главная".
 '''
 class IndexView(TemplateView):
     template_name = 'core/index.html'
@@ -16,7 +16,7 @@ class IndexView(TemplateView):
 
 
 '''
-Класс-представление для страницы - "О нас".
+    Класс-представление для страницы - "О нас".
 '''
 class AboutView(TemplateView):
     template_name = 'core/about.html'
@@ -29,7 +29,7 @@ class AboutView(TemplateView):
     
 
 '''
-Класс-представление для страницы - "Оплата и доставка".
+    Класс-представление для страницы - "Оплата и доставка".
 '''
 class DeliveryView(TemplateView):
     template_name = 'core/delivery.html'
@@ -42,7 +42,7 @@ class DeliveryView(TemplateView):
     
 
 '''
-Класс-представление для страницы - "Возврат и обмен".
+    Класс-представление для страницы - "Возврат и обмен".
 '''
 class RefundView(TemplateView):
     template_name = 'core/refund.html'
@@ -55,7 +55,7 @@ class RefundView(TemplateView):
     
 
 '''
-Класс-представление для страницы - "Контакты".
+    Класс-представление для страницы - "Контакты".
 '''
 class ContactsView(TemplateView):
     template_name = 'core/contacts.html'
