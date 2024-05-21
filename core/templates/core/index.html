@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="main-banner-row">
+    <div class="main-banner-row-slider">
+        <div class="slider">
+            {% for slider_image in slider_images %}
+                <img src="{{ slider_image.image_slider.url }}" alt="Изображение слайдера" class="slide" alt="Изображение слайдера">
+            {% endfor %}
+        </div>
+    </div>
+    <div class="main-banner-row-new">
+        <img class="main-banner-row-new-img" src="{{ news_product_images.image_news_product.url }}" alt="Новинка">
+    </div>
+</div>
+{% endblock content %}
