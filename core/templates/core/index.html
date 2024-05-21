@@ -20,10 +20,10 @@
         <div class="main-hits-row">
             {% for hit in hits %}
                 <div class="main-hits-row-card">
-                    <a href="#">
+                    <a href="{{ hit.get_absolute_url }}">
                         <img class="main-hits-row-card-img" src="{{ hit.image.url }}" alt="Logo Card">
                         <br>
-                        <a class="main-hits-row-card-name" href="#">{{ hit.name }}</a>
+                        <a class="main-hits-row-card-name" href="{{ hit.get_absolute_url }}">{{ hit.name }}</a>
                     </a>
                     {% if hit.discount %}
                         <div class="prices">
@@ -44,10 +44,10 @@
         <div class="main-hits-row">
             {% for manga in manga_list %}
                 <div class="main-hits-row-card">
-                    <a href="#">
+                    <a href="{{ manga.get_absolute_url }}">
                         <img class="main-hits-row-card-img" src="{{ manga.image.url }}" alt="Logo Card">
                         <br>
-                        <a class="main-hits-row-card-name" href="#">{{ manga.name }}</a>
+                        <a class="main-hits-row-card-name" href="{{ manga.get_absolute_url }}">{{ manga.name }}</a>
                     </a>
                     {% if manga.discount %}
                         <div class="prices">
@@ -62,7 +62,7 @@
             {% endfor %}
         </div>
         <div class="show-all-row">
-            <a class="main-hits-show-all" href="#">Посмотреть все товары</a>
+            <a class="main-hits-show-all" href="{% url 'product_list' category_slug='manga' %}">Посмотреть все товары</a>
         </div>
     </div>
 {% endblock content %}

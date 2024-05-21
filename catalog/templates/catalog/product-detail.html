@@ -142,7 +142,7 @@
                         <p class="product-detail-reviews-date">{{ comment.create_date }}</p>
                         {% if comment.user == user %}
                             <a href="#" class="product-detail-edit">Редактировать</a>
-                            <a href="#" class="product-detail-delete">Удалить</a>
+                            <a href="{% url 'delete_comment' comment_id=comment.pk %}" class="product-detail-delete">Удалить</a>
                         {% endif %}
                     </div> 
                     <div class="rating-result">

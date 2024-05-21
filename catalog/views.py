@@ -4,10 +4,11 @@ from django.urls import reverse_lazy
 
 from django.db import transaction
 
+from django.views import View
 from django.views.generic import ListView, DetailView
 from django.views.generic.edit import FormMixin
 
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 
 from .models import Category, Product, ProductProperty, Comment
 from .forms import AddNewCommentForm
@@ -106,4 +107,17 @@ class ProductDetailView(DetailView, FormMixin):
     
     def form_invalid(self, form):
         return HttpResponseRedirect(self.get_success_url())
+    
+
+'''
+    Класс-представление для удаления комментария пользователя
+'''
+class CommentDeleteView(View):
+    @transaction.atomic()
+    def get(self, request, comment_id):
+        comment = get_object_or_404(Comment, pk=comment_id)
+        comment.delete()
+        comment.product.update_rating()
+
+        return redirect(reverse_lazy('product_detail', kwargs = {'category_slug': comment.product.category.slug, 'product_slug': comment.product.slug}))
     
