@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="catalog-list-main-row-link">
+    <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+    <p>-</p>
+    <a class="catalog-list-main-row-link-item" href="{% url 'login' %}">Авторизация</a>
+</div>
+
+<h1 class="catalog-list-main-title">Вход</h1>
+
+<div class="login-block">
+
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
+            <p class="product-detail-reviews-error">*{{ error }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <div class="form-group">
+            <label class="login-email-lbl" for="{{ form.email.id_for_label }}">Эл. почта или логин</label>
+            {{ form.email }}
+        </div>
+    
+        <div class="form-group">
+            <label class="login-email-lbl" for="{{ form.password.id_for_label }}">Пароль</label>
+            {{ form.password }}
+        </div>
+
+        <button class="login-btn" type="submit">Войти</button>
+    </form>
+
+    <div class="login-auth-choice">
+        <div class="login-auth-choice-item">
+            <a href="#"><img class="login-auth-choice-item-img" src="{% static 'img/icons/auth-vk.jpg' %}" alt="VK"></a>
+        </div>
+        <div class="login-auth-choice-item">
+            <a href="#"><img class="login-auth-choice-item-img" src="{% static 'img/icons/auth-gmail.png' %}" alt="Gmail"></a>
+        </div>
+    </div>
+    <a class="login-auth-question" href="#">Забыли пароль?</a>
+    <a class="login-auth-reg" href="#">Нет аккаунта? Создайте!</a>
+</div>
+{% endblock content %}
