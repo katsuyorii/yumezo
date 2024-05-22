@@ -458,6 +458,9 @@ body {
 }
 
 .product-detail-edit {
+	cursor: pointer;
+	border: 0px solid white;
+	background-color: white;
 	text-decoration: none;
 	font-size: 13px;
 	font-weight: 500;
@@ -465,6 +468,9 @@ body {
 }
 
 .product-detail-delete {
+	cursor: pointer;
+	border: 0px solid white;
+	background-color: white;
 	text-decoration: none;
 	font-size: 13px;
 	font-weight: 500;

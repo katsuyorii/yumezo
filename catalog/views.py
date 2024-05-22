@@ -127,7 +127,9 @@ class CommentDeleteView(View):
         return redirect(reverse_lazy('product_detail', kwargs = {'category_slug': comment.product.category.slug, 'product_slug': comment.product.slug}))
     
 
-# Класс-представление для редактирования комментария
+'''
+    Класс-представление для редактирования комментария пользователя
+'''
 class CommentEditView(UpdateView):
     model = Comment
     form_class = EditCommentForm

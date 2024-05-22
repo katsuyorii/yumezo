@@ -11,7 +11,7 @@
         <p>-</p>
         <a class="catalog-list-main-row-link-item" href="{{ comment.product.get_absolute_url }}">{{ comment.product.name }}</a>
         <p>-</p>
-        <a class="catalog-list-main-row-link-item" href="#">Редактирование отзыва</a>
+        <a class="catalog-list-main-row-link-item" href="{% url 'edit_comment' comment_id=comment.pk %}">Редактирование отзыва</a>
     </div>
     <h2 class="product-detail-title">Редактирование отзыва</h2>
     <br>
