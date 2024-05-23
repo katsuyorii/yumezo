@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="catalog-list-main-row-link">
+        <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{% url 'profile' %}">Ваш профиль</a>
+    </div>
+
+    <div class="profile-row">
+        
+        {% include "profile-menu.html" %}
+
+        <div class="profile-row-info">
+            <div class="profile-row-info-title">
+                <h1 class="profile-row-info-title-t">Ваш аккаунт</h1>
+                <div class="profile-row-info-title-edit">
+                    <a class="profile-row-info-title-edit-e" href="#">Редактировать</a>
+                    <a class="profile-row-info-title-edit-p" href="#">Сменить пароль</a>
+                </div>
+            </div>
+
+            <p class="profile-row-item-name">Имя: {{ user.username }}</p>
+            <p class="profile-row-item-email">E-mail: {{ user.email }}</p>
+            {% if user.phone_number %}
+                <p class="profile-row-item-phone">Номер телефона: {{ user.phone_number }}</p>
+            {% else %}
+                <p class="profile-row-item-phone">Номер телефона: Не указан</p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock content %}

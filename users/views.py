@@ -1,4 +1,4 @@
-from django.views.generic import FormView
+from django.views.generic import FormView, TemplateView
 
 from django.contrib import messages
 from django.contrib.auth import login
@@ -66,5 +66,18 @@ class RegistrationUserView(FormView):
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
             context['title'] = 'Регистрация'
+
+            return context
+    
+
+'''
+    Класс-представление для профилей пользователей
+'''
+class ProfileUserView(TemplateView):
+    template_name = 'users/profile.html'
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Мой профиль'
 
             return context

@@ -70,10 +70,19 @@
                             </a>
                         </div>  
                         <div class="main-row-right-item">
+                            {% if user.is_authenticated %}
+                                {% if user.is_active %}
+                                    <a class="main-row-right-item-link" href="{% url 'profile' %}">
+                                {% endif %}
+                                    <img class="main-row-right-item-img" src="{% static 'img/icons/icon-user.png' %}" alt="User">
+                                    <p class="main-row-right-item-text">{{ user.username }}</p>
+                                </a>
+                            {% else %}
                                 <a class="main-row-right-item-link" href="{% url 'login' %}">
                                     <img class="main-row-right-item-img" src="{% static 'img/icons/icon-user.png' %}" alt="User">
                                     <p class="main-row-right-item-text">Вход</p>
                                 </a>
+                            {% endif %}
                         </div>
                     </div>
                 </div>
