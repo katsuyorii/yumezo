@@ -1,7 +1,9 @@
-from django.views.generic import FormView, TemplateView
+from django.shortcuts import redirect
+
+from django.views.generic import FormView, TemplateView, View
 
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 
 from django.urls import reverse_lazy
 
@@ -81,3 +83,13 @@ class ProfileUserView(TemplateView):
             context['title'] = 'Мой профиль'
 
             return context
+    
+
+'''
+    Класс-представление для выхода из профиля
+'''
+class LogoutUserView(View):
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        messages.success(request, 'Вы успешно вышли из системы!')
+        return redirect(reverse_lazy('index'))
