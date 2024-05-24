@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView
+from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView
 
 from django.contrib.auth.decorators import login_required
 
@@ -8,4 +8,5 @@ urlpatterns = [
     path('registration/', RegistrationUserView.as_view(), name='registration'),
     path('profile/', login_required(ProfileUserView.as_view()), name='profile'),
     path('logout/', login_required(LogoutUserView.as_view()), name='logout'),
+    path('change-password/', login_required(ChangePasswordUserView.as_view()), name='change_password'),
 ]

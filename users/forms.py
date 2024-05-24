@@ -77,3 +77,20 @@ class RegistrationUserForm(forms.Form):
             raise forms.ValidationError('Пользователь с таким email уже существует!')
         
         return email
+
+
+'''
+    Класс для формы смены пароля
+'''
+class ChangePasswordUserForm(PasswordChangeForm):
+    old_password = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'login-email-input',
+    }))
+
+    new_password1 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'login-email-input',
+    }))
+
+    new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={
+        'class': 'login-email-input',
+    }))
