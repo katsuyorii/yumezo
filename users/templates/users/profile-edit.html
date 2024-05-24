@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="catalog-list-main-row-link">
+    <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+    <p>-</p>
+    <a class="catalog-list-main-row-link-item" href="{% url 'profile' %}">Ваш профиль</a>
+    <p>-</p>
+    <a class="catalog-list-main-row-link-item" href="{% url 'profile_edit' %}">Редактировать</a>
+</div>
+
+<div class="profile-row">
+
+    {% include "profile-menu.html" %}
+    
+    <div class="profile-row-info">
+
+        {% if form.phone_number.errors %}
+            {% for error in form.phone_number.errors %}
+                <p class="product-detail-reviews-error">*{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        {% if form.email.errors %}
+            {% for error in form.email.errors %}
+                <p class="product-detail-reviews-error">*{{ error }}</p>
+            {% endfor %}
+        {% endif %}
+
+        <br>
+        
+        <form enctype="multipart/form-data" method="POST">
+            {% csrf_token %}
+            <div class="form-group-ed">
+                <label class="login-email-lbl" for="{{ form.username.id_for_label }}">Имя*</label>
+                {{ form.username }}
+            </div>
+
+            <div class="form-group">
+                <label class="login-email-lbl" for="{{ form.phone_number.id_for_label }}">Телефон</label>
+                {{ form.phone_number }}
+            </div>
+        
+            <div class="form-group">
+                <label class="login-email-lbl" for="{{ form.email.id_for_label }}">Адрес эл.почты*</label>
+                {{ form.email }}
+                <p class="login-email-help-text">{{ form.email.help_text }}</p>
+            </div>
+
+            <div class="form-group">
+                <label class="login-email-lbl" for="{{ form.image.id_for_label }}">Фото</label>
+                {{ form.image }}
+                <p class="login-email-help-text">{{ form.image.help_text }}</p>
+            </div>
+        
+            <button class="login-btn-prof" type="submit">Сохранить</button>
+        </form>
+    </div>
+</div>
+{% endblock content %}

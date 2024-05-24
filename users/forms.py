@@ -94,3 +94,31 @@ class ChangePasswordUserForm(PasswordChangeForm):
     new_password2 = forms.CharField(widget=forms.PasswordInput(attrs={
         'class': 'login-email-input',
     }))
+
+
+'''
+    Класс для формы редактирования профиля
+'''
+class EditInfoUserForm(forms.ModelForm):
+    username = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'login-email-input', 
+    }))
+
+    email = forms.CharField(widget=forms.EmailInput(attrs={
+        'class': 'login-email-input', 
+    }), help_text='При изменении адреса электронной почты, новую почту необходимо будет подтвердить, перейдя по ссылке из пиcьма, которое будет отправлено на текущий адрес. До подтверждения аккаунт будет неактивен.')
+
+    phone_number = PhoneNumberField(required=False, widget=forms.TextInput(attrs={
+        'class': 'login-email-input', 
+    }))
+
+    image = forms.ImageField(required=False, widget=forms.FileInput(), help_text='Файл изображения размером не более 100MB')
+
+    class Meta:
+        model = User
+        fields = ['username', 'email', 'phone_number', 'image']
+    
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number')
+
+        return to_python(phone_number)
