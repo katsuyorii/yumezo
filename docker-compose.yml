@@ -26,3 +26,22 @@ services:
       .env
     depends_on:
       - db
+      - redis
+      - worker
+
+  worker:
+    build: .
+    container_name: celery
+    restart: always
+    command: celery -A yumezo worker -l info
+    volumes:
+      - .:/app
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:latest
+    container_name: redis
+    restart: always
+    ports:
+      - "6379:6379"
