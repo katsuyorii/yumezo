@@ -158,6 +158,13 @@ DEBUG_TOOLBAR_CONFIG = {
 }
 
 
+# Overrate backend auth
+
+AUTHENTICATION_BACKENDS = [
+    'users.backend.EmailAuthBackend',
+]
+
+
 # CELERY SETTINGS
 
 CELERY_BROKER_URL = 'redis://redis:6379/0'
