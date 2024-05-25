@@ -51,7 +51,7 @@ class RegistrationUserView(FormView):
     template_name = 'users/registration.html'
 
     def get_success_url(self):
-        return reverse_lazy('index')
+        return reverse_lazy('activate_email_done')
 
     def form_valid(self, form): 
         username = form.cleaned_data['username']
@@ -142,7 +142,7 @@ class EditInfoUserView(UpdateView):
             self.object = form.save(commit=False)
             self.object.is_active = False
             self.object.save()
-            return HttpResponseRedirect(reverse_lazy('index'))
+            return HttpResponseRedirect(reverse_lazy('activate_email_done'))
     
     def form_invalid(self, form):
         messages.error(self.request, 'Ошибка заполнения формы!')
@@ -160,3 +160,16 @@ class EditInfoUserView(UpdateView):
         context['title'] = 'Редактирование профиля'
 
         return context
+    
+
+'''
+    Класс-представление для страницы ожидания активации учетной записи
+'''
+class ActivateEmailDoneView(TemplateView):
+    template_name = 'users/activate-email-done.html'
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Подтверждение E-mail'
+
+            return context
