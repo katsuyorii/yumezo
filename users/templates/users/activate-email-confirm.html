@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="catalog-list-main-row-link">
+    <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+    <p>-</p>
+    <a class="catalog-list-main-row-link-item" href="{% url 'registration' %}">Регистрация</a>
+</div>
+
+<h1 class="pay_delivery-title">E-mail успешно подтвержден!</h1>
+<div class="email-send-text-block">
+    <p class="email-send-text-block-text">Ваш аккаунт готов к покупкам!</p>
+</div>
+{% endblock content %}

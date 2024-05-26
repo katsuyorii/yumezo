@@ -1,5 +1,5 @@
 from django.contrib.auth.tokens import default_token_generator  
-from django.contrib.sites.models import Site  
+from django.contrib.sites.models import Site
 
 from django.urls import reverse_lazy  
 
@@ -16,7 +16,7 @@ class SendEmail:
 
     def send_activate_email(self):  
         activate_url = reverse_lazy(  
-            "activate-email-check", kwargs={"uidb64": self.uid, "token": self.token}  
+            "activate_email_check", kwargs={"uidb64": self.uid, "token": self.token}  
         )  
         subject = f"Активация аккаунта на сайте {self.current_site}"  
         message = (  

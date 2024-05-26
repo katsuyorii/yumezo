@@ -7,11 +7,15 @@ from django.views.generic import FormView, TemplateView, View, UpdateView
 from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import PasswordChangeView
+from django.contrib.auth.tokens import default_token_generator
 
 from django.urls import reverse_lazy
 
+from django.utils.http import urlsafe_base64_decode
+
 from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm
 from .models import User
+from .tasks import activate_email_task
 
 
 '''
@@ -60,6 +64,7 @@ class RegistrationUserView(FormView):
 
         user = User.objects.create_user(username=username, email=email, password=password1, is_active=False)
         login(self.request, user)
+        activate_email_task.delay(user.pk)
         
         messages.success(self.request, 'Вы зарегестрировались в системе!')
         return super().form_valid(form)
@@ -142,6 +147,7 @@ class EditInfoUserView(UpdateView):
             self.object = form.save(commit=False)
             self.object.is_active = False
             self.object.save()
+            activate_email_task.delay(self.request.user.pk)
             return HttpResponseRedirect(reverse_lazy('activate_email_done'))
     
     def form_invalid(self, form):
@@ -167,6 +173,51 @@ class EditInfoUserView(UpdateView):
 '''
 class ActivateEmailDoneView(TemplateView):
     template_name = 'users/activate-email-done.html'
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Подтверждение E-mail'
+
+            return context
+    
+
+'''
+    Класс-представление для обработки логики подтверждения токена пользователя и активация пользователя
+'''
+class ActivateEmailCheckView(View):  
+    def get(self, request, uidb64, token):  
+        try:  
+            uid = urlsafe_base64_decode(uidb64)  
+            user = User.objects.get(pk=uid)  
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):  
+            user = None  
+        if user is not None and default_token_generator.check_token(user, token):  
+            user.is_active = True
+            user.save()  
+            login(request, user)  
+            return HttpResponseRedirect(reverse_lazy('activate_email_confirm'))
+        else:  
+            return HttpResponseRedirect(reverse_lazy('activate_email_not_confirm'))
+        
+
+'''
+    Класс-представление для страницы подтверждения активации учетной записи
+'''
+class ActivateEmailConfirmView(TemplateView):
+    template_name = 'users/activate-email-confirm.html'
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Подтверждение E-mail'
+
+            return context
+    
+
+'''
+    Класс-представление для страницы ошибки активации учетной записи
+'''
+class ActivateEmailErrorView(TemplateView):
+    template_name = 'users/activate-email-not-confirm.html'
 
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)

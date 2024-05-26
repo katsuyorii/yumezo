@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
 
     'core',
     'catalog',
@@ -156,6 +157,11 @@ AUTH_USER_MODEL = 'users.User'
 DEBUG_TOOLBAR_CONFIG = {
     'SHOW_TOOLBAR_CALLBACK': lambda _request: DEBUG
 }
+
+
+# SITE ID's
+
+SITE_ID = 1
 
 
 # Overrate backend auth
