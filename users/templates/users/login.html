@@ -41,7 +41,7 @@
             <a href="#"><img class="login-auth-choice-item-img" src="{% static 'img/icons/auth-gmail.png' %}" alt="Gmail"></a>
         </div>
     </div>
-    <a class="login-auth-question" href="#">Забыли пароль?</a>
+    <a class="login-auth-question" href="{% url 'forgot_password_email' %}">Забыли пароль?</a>
     <a class="login-auth-reg" href="{% url 'registration' %}">Нет аккаунта? Создайте!</a>
 </div>
 {% endblock content %}

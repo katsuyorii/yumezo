@@ -13,9 +13,9 @@ from django.urls import reverse_lazy
 
 from django.utils.http import urlsafe_base64_decode
 
-from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm
+from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm, ForgotPasswordChangeForm, ForgotPasswordEmailForm
 from .models import User
-from .tasks import activate_email_task
+from .tasks import activate_email_task, forgot_password_email_task
 
 from catalog.models import Favorites
 
@@ -267,3 +267,86 @@ class FavoritesDeleteUserView(View):
 
         messages.success(request, 'Товар удален из изранного!')
         return redirect(reverse_lazy('favorites'))
+    
+
+'''
+    Класс-представление для отправки email на восстановление пароля
+'''
+class ForgotPasswordEmailView(FormView):
+    form_class = ForgotPasswordEmailForm
+    template_name = 'users/forgot-password-email.html'
+
+    def get_success_url(self):
+        return reverse_lazy('forgot_password_email')
+
+    def form_valid(self, form): 
+        email_form = form.cleaned_data['email']
+        user = get_object_or_404(User, email=email_form)
+        forgot_password_email_task.delay(user.pk)
+
+        messages.success(self.request, 'Письмо на восстановление пароля отправлено на почту!')
+        return super().form_valid(form)
+            
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка заполнения формы!')
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Восстановление пароля'
+
+            return context
+    
+
+'''
+    Класс-представление для проверки токена на восстановление пароля
+'''
+class ForgotPasswordEmailCheckView(View):  
+    def get(self, request, uidb64, token):  
+        try:  
+            uid = urlsafe_base64_decode(uidb64)  
+            user = User.objects.get(pk=uid)  
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist):  
+            user = None  
+        if user is not None and default_token_generator.check_token(user, token):  
+            return HttpResponseRedirect(reverse_lazy('forgot_password_change',  kwargs={'uidb64': uidb64}))
+        else:  
+            return HttpResponseRedirect(reverse_lazy('activate_email_done'))
+        
+
+'''
+    Класс-представление для отправки email на восстановление пароля
+'''
+class ForgotPasswordChangeView(FormView):
+    form_class = ForgotPasswordChangeForm
+    template_name = 'users/forgot-password-change.html'
+
+    def get(self, request, uidb64):
+        return super().get(self, request, uidb64)
+
+    def get_success_url(self):
+        return reverse_lazy('profile')
+
+    def form_valid(self, form): 
+        uid = urlsafe_base64_decode(self.kwargs['uidb64'])  
+        user = get_object_or_404(User, pk=uid) 
+
+        new_password = form.cleaned_data['password2']
+
+        user.set_password(new_password)
+        user.save()
+        
+        login(self.request, user)
+
+        messages.success(self.request, 'Ваш пароль успешно изменен!')
+        return super().form_valid(form)
+            
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка заполнения формы!')
+        return super().form_invalid(form)
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            context['title'] = 'Восстановление пароля'
+
+            return context
