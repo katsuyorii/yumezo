@@ -29,12 +29,15 @@
         <div class="product-detail-stars-forever">
             {% if not user.is_authenticated %}  
                 <img id='forever' src="{% static 'img/icons/icon-love.png' %}" alt="Forever">
-                <a href="#" class="product-detail-stars-forever-link-not-ajax">В избранное</a>
+                <a href="{% url 'login' %}" class="product-detail-stars-forever-link-not-ajax">В избранное</a>
             {% else %}
-                
+                {% if not is_favorites %}
                     <img id='forever' src="{% static 'img/icons/icon-love.png' %}" alt="Forever">
-                    <a href="#" class="product-detail-stars-forever-link">В избранное</a>
-                
+                    <a href="{% url 'add_favorites' product_id=product.pk %}" class="product-detail-stars-forever-link">В избранное</a>
+                {% else %}
+                    <img id='forever' src="{% static 'img/icons/heart-red.png' %}" alt="Forever">
+                    <a href="{% url 'add_favorites' product_id=product.pk %}" class="product-detail-stars-forever-link-red">В избранном</a>
+                {% endif %}
             {% endif %}
         </div>
     </div>

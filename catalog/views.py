@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 from django.urls import reverse_lazy
 
@@ -10,7 +10,7 @@ from django.views.generic.edit import FormMixin
 
 from django.shortcuts import get_object_or_404, redirect
 
-from .models import Category, Product, ProductProperty, Comment
+from .models import Category, Product, ProductProperty, Comment, Favorites
 from .forms import AddNewCommentForm, EditCommentForm
 
 from django.contrib.auth.models import AnonymousUser
@@ -79,8 +79,10 @@ class ProductDetailView(DetailView, FormMixin):
         # Проверка, если пользователь не авторизирован, то у него нет доступа к форме создания комментария и добавления в избранное
         if isinstance(self.request.user, AnonymousUser):
             context['is_user_comment'] = True
+            context['is_favorites'] = False
         else:
             context['is_user_comment'] = Comment.objects.filter(user=self.request.user, product__slug=self.kwargs['product_slug']).exists()
+            context['is_favorites'] = Favorites.objects.filter(user=self.request.user, product__slug = self.kwargs['product_slug']).exists()
 
         return context
     
@@ -163,3 +165,25 @@ class CommentEditView(UpdateView):
     def get_success_url(self):
         return reverse_lazy('product_detail', kwargs = {'category_slug': self.object.product.category.slug, 'product_slug': self.object.product.slug})
     
+
+'''
+    Класс-представление для добавления в избранное
+'''
+class FavoritesAddUserView(View):
+    def get(self, request, *args, **kwargs):
+        product = get_object_or_404(Product, pk=self.kwargs['product_id'])
+
+        if not Favorites.objects.filter(product=product, user=request.user):
+            new_favorite = Favorites(product=product, user=request.user)
+            new_favorite.save()
+            button_text = 'В избранном'
+            button_color = 'red'
+            new_img = '/static/img/icons/heart-red.png'
+        else:
+            selected_favorite = Favorites.objects.filter(product=product, user=request.user)
+            selected_favorite.delete()
+            button_text = 'В избранное'
+            button_color = 'black'
+            new_img = '/static/img/icons/icon-love.png'
+
+        return JsonResponse({'button_text': button_text, 'button_color': button_color, 'new_img': new_img})
