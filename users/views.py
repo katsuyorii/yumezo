@@ -224,3 +224,12 @@ class ActivateEmailErrorView(TemplateView):
             context['title'] = 'Подтверждение E-mail'
 
             return context
+    
+
+'''
+    Класс-представление для повторной отправки на email
+'''
+class ActivateEmailRepeatSendView(View):
+    def get(self, request): 
+        activate_email_task.delay(request.user.pk)
+        return HttpResponseRedirect(reverse_lazy('activate_email_done'))

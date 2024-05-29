@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView, EditInfoUserView, ActivateEmailDoneView, ActivateEmailCheckView, ActivateEmailConfirmView, ActivateEmailErrorView
+from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView, EditInfoUserView, ActivateEmailDoneView, ActivateEmailCheckView, ActivateEmailConfirmView, ActivateEmailErrorView, ActivateEmailRepeatSendView
 
 from django.contrib.auth.decorators import login_required
 
@@ -15,4 +15,5 @@ urlpatterns = [
      path('activate-email-check/<uidb64>/<token>/', login_required(ActivateEmailCheckView.as_view()), name='activate_email_check'),
     path('activate-email-confirm/', login_required(ActivateEmailConfirmView.as_view()), name='activate_email_confirm'),
     path('activate-email-not-confirm/', login_required(ActivateEmailErrorView.as_view()), name='activate_email_not_confirm'),
+    path('activate-email-repeat/', login_required(ActivateEmailRepeatSendView.as_view()), name='activate_email_repeat'),
 ]
