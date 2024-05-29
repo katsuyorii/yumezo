@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% load static %}
+{% load product_count_declination %}
+
+{% block content %}
+<h1 class="catalog-list-main-title-search">По запросу "{{ search_value }}" найдено {{ count_products }} {{ count_products|product_count_declination }}</h1>
+
+<div class="product-list-main-row">
+    <div class="product-list-main-row-products">
+        {% if products.exists %}
+            <div class="product-list-main-row-products-search-grid">
+                {% for product in products %}
+                <div class="product-list-main-row-products-grid-item">
+                    <a href="{{ product.get_absolute_url }}">
+                        <img class="product-list-main-row-products-grid-item-img" src="{{ product.image.url }}" alt="Logo">
+                        <a class="product-list-main-row-products-grid-item-name" href="{{ product.get_absolute_url }}">{{ product.name }}</a>
+                        {% if product.discount %}
+                            <div class="prices">
+                                <p class="product-list-main-row-products-grid-item-price-sale">{{ product.price }} ₽</p>
+                                <p class="product-list-main-row-products-grid-item-price-through">{{ product.price_discount }} ₽</p>
+                            </div>
+                        {% else %}
+                            <p class="product-list-main-row-products-grid-item-price">{{ product.price }} ₽</p>
+                        {% endif %}
+                        <a class="product-list-main-row-products-grid-item-btn" href="#">В корзину</a>
+                    </a>
+                </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-items-search">
+                <p class="no-items-text">Не найдено ни одного товара, доступного для заказа</p>
+            </div>
+        {% endif %}
+        
+        {% if is_paginated %}
+            <div class="product-list-main-pagination">
+                {% if page_obj.has_previous %}
+                    <a href="?page={{ page_obj.previous_page_number }}">«</a>
+                {% endif %}
+                
+                {% for page in paginator.page_range %}
+                    {% if page == page_obj.number %}
+                        <a class="active" href="?page={{ page }}">{{ page }}</a>
+                    {% else %}
+                        <a href="?page={{ page }}">{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
+
+                {% if page_obj.has_next %}
+                    <a href="?page={{ page_obj.next_page_number }}">»</a>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="{% static 'js/filters.js' %}"></script>
+{% endblock content %}

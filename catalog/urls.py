@@ -1,12 +1,13 @@
 from django.urls import path
 
-from .views import CatalogView, ProductListView, ProductDetailView, CommentDeleteView, CommentEditView, FavoritesAddUserView
+from .views import CatalogView, ProductListView, ProductDetailView, CommentDeleteView, CommentEditView, FavoritesAddUserView, SearchProductListView
 
 from django.contrib.auth.decorators import login_required
 
 
 urlpatterns = [
     path('', CatalogView.as_view(), name='catalog'),
+    path('search/', SearchProductListView.as_view(), name='search'),
     path('<slug:category_slug>/', ProductListView.as_view(), name='product_list'),
     path('<slug:category_slug>/<slug:product_slug>/', ProductDetailView.as_view(), name='product_detail'),
 

@@ -43,7 +43,7 @@
                     <div class="main-row-left">
                         <a href="{% url 'index' %}"><img src="{% static 'img/logo.png' %}" alt="Logo" class="main-row-left-logo"></a>
                         <a class="main-row-left-btn" href="{% url 'catalog' %}">Каталог</a>
-                        <form action="#" method="GET">
+                        <form action="{% url 'search' %}" method="GET">
                             <div id="file-info" class='search-form'>
                                 <input name="filter" type="text" placeholder='Поиск...' />
                                 <button type="submit"><img class="search-form-img" src="{% static 'img/search.svg' %}" alt="Search"></button>

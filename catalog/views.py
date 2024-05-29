@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import Http404, HttpResponseRedirect, JsonResponse
 
 from django.urls import reverse_lazy
 
@@ -187,3 +187,33 @@ class FavoritesAddUserView(View):
             new_img = '/static/img/icons/icon-love.png'
 
         return JsonResponse({'button_text': button_text, 'button_color': button_color, 'new_img': new_img})
+    
+
+'''
+    Класс представление для поиска на сайте
+'''
+class SearchProductListView(ListView):
+    model = Product
+    template_name = 'catalog/product-list-search.html'
+    context_object_name = 'products'
+    paginate_by = 15
+
+    def get_queryset(self):
+        search_value = self.request.GET.get('filter')
+        if search_value is None:
+            raise Http404
+        
+        queryset = Product.objects.filter(name__icontains=search_value).select_related('category')
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+
+        search_value = self.request.GET.get('filter')
+
+        context['title'] = f'Поиск по сайту: {search_value}'
+        context['count_products'] = self.object_list.count()
+        context['search_value'] = search_value
+
+        return context
