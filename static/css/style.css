@@ -1554,12 +1554,18 @@ body {
 }
 
 .product-list-main-row-products-grid-item-del {
+	cursor: pointer;
+	border: 0px solid white;
+	background-color: white;
     text-decoration: none;
     color: var(--text-link-color);
     font-size: 11px;
 }
 
 .product-list-main-row-products-grid-item-del:hover {
+	cursor: pointer;
+	border: 0px solid white;
+	background-color: white;
     transition: 0.3s linear;
     color: var(--text-link-color-dark);
 }

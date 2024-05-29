@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="catalog-list-main-row-link">
+    <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+    <p>-</p>
+    <a class="catalog-list-main-row-link-item" href="{% url 'favorites' %}">Избранное</a>
+</div>
+
+<div class="profile-row">
+
+    {% include "profile-menu.html" %}
+
+    <div class="profile-row-info">
+
+        {% if favorites|length == 0 %}
+            {% include "no-items.html" %}
+        {% else %}
+        <div class="product-list-main-row-products-grid-forever">
+            {% for favor in favorites %}
+                <div class="product-list-main-row-products-grid-item">
+                    <a href="{{ favor.product.get_absolute_url }}">
+                        <img class="product-list-main-row-products-grid-item-img" src="{{ favor.product.image.url }}" alt="Logo">
+                        <a class="product-list-main-row-products-grid-item-name" href="{{ favor.product.get_absolute_url }}">{{ favor.product.name }}</a>
+                        {% if favor.product.discount %}
+                            <div class="prices">
+                                <p class="product-list-main-row-products-grid-item-price-sale">{{ favor.product.price }} ₽</p>
+                                <p class="product-list-main-row-products-grid-item-price-through">{{ favor.product.price_discount }} ₽</p>
+                            </div>
+                        {% else %}
+                            <p class="product-list-main-row-products-grid-item-price">{{ favor.product.price }} ₽</p>
+                        {% endif %}
+                        <a class="product-list-main-row-products-grid-item-btn-forever" href="#">В корзину</a>
+                        <br>
+                        <br>
+                        <form action="{{ favor.get_absolute_url }}">
+                            <button type="submit" class="product-list-main-row-products-grid-item-del">Удалить из избранного</button>
+                        </form>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

@@ -1,8 +1,8 @@
 from django.http import HttpResponseRedirect
 
-from django.shortcuts import redirect
+from django.shortcuts import get_object_or_404, redirect
 
-from django.views.generic import FormView, TemplateView, View, UpdateView
+from django.views.generic import FormView, TemplateView, View, UpdateView, ListView
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
@@ -16,6 +16,8 @@ from django.utils.http import urlsafe_base64_decode
 from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm
 from .models import User
 from .tasks import activate_email_task
+
+from catalog.models import Favorites
 
 
 '''
@@ -233,3 +235,35 @@ class ActivateEmailRepeatSendView(View):
     def get(self, request): 
         activate_email_task.delay(request.user.pk)
         return HttpResponseRedirect(reverse_lazy('activate_email_done'))
+    
+
+'''
+    Класс-представление для страницы с избранными товарами пользователя
+'''
+class FavoritesUserView(ListView):
+    model = Favorites
+    template_name = 'users/favorites.html'
+    context_object_name = 'favorites'
+
+    def get_queryset(self):
+        queryset = Favorites.objects.filter(user=self.request.user).select_related('product__category')
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Избранное'
+
+        return context
+    
+
+'''
+    Класс-представление для удаления из избранного
+'''
+class FavoritesDeleteUserView(View):
+    def get(self, request, *args, **kwargs):
+        favor = get_object_or_404(Favorites, pk=self.kwargs['favorites_id'])
+        favor.delete()
+
+        messages.success(request, 'Товар удален из изранного!')
+        return redirect(reverse_lazy('favorites'))
