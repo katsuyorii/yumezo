@@ -112,11 +112,11 @@ class EditInfoUserForm(forms.ModelForm):
         'class': 'login-email-input', 
     }))
 
-    image = forms.ImageField(required=False, widget=forms.FileInput(), help_text='Файл изображения размером не более 100MB')
+    profile_image = forms.ImageField(required=False, widget=forms.FileInput(), help_text='Файл изображения размером не более 100MB')
 
     class Meta:
         model = User
-        fields = ['username', 'email', 'phone_number', 'image']
+        fields = ['username', 'email', 'phone_number', 'profile_image']
     
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number')
