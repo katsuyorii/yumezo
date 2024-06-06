@@ -25,7 +25,7 @@ class SendEmail:
             f"https://{self.current_site}{activate_url}\n"  
         )  
 
-        self.user.email_user(subject=subject, message=message) # Как будто нужно заменить!!!
+        self.user.email_user(subject=subject, message=message)
 
     def send_forgot_password_email(self):
         forgot_psw_url = reverse_lazy(  

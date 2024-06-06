@@ -34,10 +34,12 @@ services:
     container_name: celery
     restart: always
     command: celery -A yumezo worker -l info
+    env_file:
+      .env
     volumes:
       - .:/app
     depends_on:
-      - redis
+      - db
 
   redis:
     image: redis:latest
