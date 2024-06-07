@@ -3,6 +3,7 @@ from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 
 from django.db import transaction
+from django.db.models import Min, Max
 
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView
@@ -10,7 +11,7 @@ from django.views.generic.edit import FormMixin
 
 from django.shortcuts import get_object_or_404, redirect
 
-from .models import Category, Product, ProductProperty, Comment, Favorites
+from .models import Category, Product, ProductProperty, Comment, Favorites, Genre, Source
 from .forms import AddNewCommentForm, EditCommentForm
 
 from django.contrib.auth.models import AnonymousUser
@@ -49,7 +50,11 @@ class ProductListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Каталог товаров'
+        context['min_price'] = int(Product.objects.aggregate(min_price=Min('price'))['min_price'])
+        context['max_price'] = int(Product.objects.aggregate(max_price=Max('price'))['max_price'])
         context['selected_category'] = get_object_or_404(Category, slug=self.kwargs['category_slug'])
+        context['genres'] = Genre.objects.all()
+        context['sources'] = Source.objects.all()
 
         return context
     
@@ -217,3 +222,44 @@ class SearchProductListView(ListView):
         context['search_value'] = search_value
 
         return context
+    
+
+'''
+    Класс представление для фильтрации продуктов с помощью AJAX JS
+'''
+class DynamicFiltersProducts(View):
+    def get(self, request, *args, **kwargs):
+        selected_genres = request.GET.getlist('genres[]')
+        selected_source = request.GET.get('source')
+        category_slug = request.GET.get('category_slug')
+
+        min_price = request.GET.get('min_price')
+        max_price = request.GET.get('max_price')
+
+        filtered_products = Product.objects.filter(category__slug=category_slug)
+        
+        if selected_genres:
+            genres_filter = Q()
+            for genre in selected_genres:
+                genres_filter |= Q(productproperty__value_genres__name=genre)
+            filtered_products = filtered_products.filter(genres_filter).distinct()
+        
+        if selected_source:
+            filtered_products = filtered_products.filter(source__name=selected_source)
+
+        if min_price != 0 or max_price != 0:
+            filtered_products = filtered_products.filter(price__gte=min_price, price__lte=max_price)
+        
+        products_list = []
+        for product in filtered_products:
+            product_data = {
+                'name': product.name,
+                'price': product.price,
+                'discount': True if product.discount else False,
+                'price_discount': product.price_discount(),
+                'image': product.image.url,  
+                'absolute_url': product.get_absolute_url()
+            }
+            products_list.append(product_data)
+
+        return JsonResponse({'products': products_list})

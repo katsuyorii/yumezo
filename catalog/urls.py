@@ -1,6 +1,6 @@
 from django.urls import path
 
-from .views import CatalogView, ProductListView, ProductDetailView, CommentDeleteView, CommentEditView, FavoritesAddUserView, SearchProductListView
+from .views import CatalogView, ProductListView, ProductDetailView, CommentDeleteView, CommentEditView, FavoritesAddUserView, SearchProductListView, DynamicFiltersProducts
 
 from django.contrib.auth.decorators import login_required
 
@@ -15,4 +15,6 @@ urlpatterns = [
     path('edit_comment/<int:comment_id>', CommentEditView.as_view(), name='edit_comment'),
 
     path('add_favorites/<int:product_id>', login_required(FavoritesAddUserView.as_view()), name='add_favorites'),
+
+    path('dynamic-filters/', DynamicFiltersProducts.as_view(), name='dynamic-filters'),
 ]

@@ -16,24 +16,24 @@
             <form method="GET">
                 <p class="product-list-main-filters-title">Цена</p>
                 <div class="product-list-main-filters-price-row">
-                    <input class="product-list-main-filters-price" type="text" name="min_price" value="0">
-                    <input class="product-list-main-filters-price" type="text" name="max_price" value="0">
+                    <input class="product-list-main-filters-price" type="text" name="min_price" value="{{ min_price }}">
+                    <input class="product-list-main-filters-price" type="text" name="max_price" value="{{ max_price }}">
                 </div>
                 <p class="product-list-main-filters-title">Жанры</p>
-                
+                {% for genre in genres %}
                     <div class="product-list-main-filters-checkbox-row">
-                        <input class="product-list-main-filters-checkbox-genre" type="checkbox" name="genre" value="Драма">
-                        <p class="product-list-main-filters-checkbox-text">Драма</p>
+                        <input class="product-list-main-filters-checkbox-genre" type="checkbox" name="genre" value="{{ genre.name }}">
+                        <p class="product-list-main-filters-checkbox-text">{{ genre.name }}</p>
                     </div>
-                
+                {% endfor %}
 
                 <p class="product-list-main-filters-title">Источники</p>
-                
+                {% for source in sources %}
                     <div class="product-list-main-filters-checkbox-row">
-                        <input class="product-list-main-filters-checkbox-source" type="checkbox" name="source" value="Naruto">
-                        <p class="product-list-main-filters-checkbox-text">Naruto</p>
+                        <input class="product-list-main-filters-checkbox-source" type="checkbox" name="source" value="{{source.name}}">
+                        <p class="product-list-main-filters-checkbox-text">{{ source.name }}</p>
                     </div>
-                
+                {% endfor %}
             </form>
         </div>
 

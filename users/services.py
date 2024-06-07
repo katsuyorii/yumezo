@@ -29,7 +29,7 @@ class SendEmail:
 
     def send_forgot_password_email(self):
         forgot_psw_url = reverse_lazy(  
-            "forgot-password-email-check", kwargs={"uidb64": self.uid, "token": self.token}  
+            "forgot_password_email_check", kwargs={"uidb64": self.uid, "token": self.token}  
         )  
         subject = f"Восстановление пароля"  
         message = (  
