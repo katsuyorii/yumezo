@@ -9,8 +9,7 @@
         {% endif %}
     </span>
     <a class="profile-row-links-a" href="#">История заказов</a>
-    <a class="profile-row-links-a" href="#">Контакты</a>
     <a class="profile-row-links-a" href="{% url 'favorites' %}">Избранное</a>
-    <a class="profile-row-links-a" href="#">Корзина</a>
+    <a class="profile-row-links-a" href="{% url 'cart' %}">Корзина</a>
     <a class="profile-row-links-a" href="{% url 'logout' %}">Выход</a>
 </div>

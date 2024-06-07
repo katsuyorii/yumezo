@@ -17,7 +17,7 @@ from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, 
 from .models import User
 from .tasks import activate_email_task, forgot_password_email_task
 
-from catalog.models import Favorites
+from catalog.models import Favorites, Cart
 
 
 '''
@@ -348,5 +348,36 @@ class ForgotPasswordChangeView(FormView):
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
             context['title'] = 'Восстановление пароля'
+
+            return context
+    
+
+'''
+    Класс-представление для корзины пользователя
+'''
+class CartUserView(ListView):
+    model = Cart
+    template_name = 'users/cart.html'
+    context_object_name = 'carts'
+
+    def get_queryset(self):
+        queryset = Cart.objects.filter(user=self.request.user)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+            total_price = 0
+            total_sale = 0
+
+            for cart in self.object_list:
+                total_price += cart.amount * cart.product.price_discount() if cart.product.discount else  cart.amount * cart.product.price
+                total_sale += cart.amount * (cart.product.price_discount() - cart.product.price) if cart.product.discount else 0
+
+            context['title'] = 'Корзина'
+            context['amount_products'] = self.object_list.count()
+            context['all_products_price'] = total_price
+            context['all_products_sale'] = total_sale
+            context['all_products_price_discounted'] = total_price - total_sale
 
             return context

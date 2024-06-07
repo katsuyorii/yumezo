@@ -205,3 +205,25 @@ class Favorites(models.Model):
     class Meta:
         verbose_name = 'Избранное пользователя'
         verbose_name_plural = 'Избранное пользователей'
+
+
+'''
+    Модель описывающая корзину пользователя
+'''
+class Cart(models.Model):
+    product = models.ForeignKey(verbose_name='Продукт', to=Product, on_delete=models.CASCADE)
+    user = models.ForeignKey(verbose_name='Пользователь', to=User, on_delete=models.CASCADE)
+    amount = models.PositiveIntegerField(verbose_name='Количество', default=1)
+
+    def __str__(self):
+        return f'{self.user.username} | {self.product.name} | {self.amount}'
+    
+    def total_price_not_sale(self):
+        return self.amount * self.product.price
+    
+    def total_price_sale(self):
+        return self.amount * self.product.price_discount()
+
+    class Meta:
+        verbose_name = 'Корзина пользователя'
+        verbose_name_plural = 'Корзины пользователей'
