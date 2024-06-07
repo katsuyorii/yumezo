@@ -3,7 +3,7 @@ from django.http import Http404, HttpResponseRedirect, JsonResponse
 from django.urls import reverse_lazy
 
 from django.db import transaction
-from django.db.models import Min, Max
+from django.db.models import Min, Max, Q
 
 from django.views import View
 from django.views.generic import ListView, DetailView, UpdateView
