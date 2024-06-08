@@ -1,4 +1,4 @@
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 from django.shortcuts import get_object_or_404, redirect
 
@@ -17,7 +17,7 @@ from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, 
 from .models import User
 from .tasks import activate_email_task, forgot_password_email_task
 
-from catalog.models import Favorites, Cart
+from catalog.models import Favorites, Cart, Product
 
 
 '''
@@ -381,3 +381,18 @@ class CartUserView(ListView):
             context['all_products_price_discounted'] = total_price - total_sale
 
             return context
+
+
+'''
+    Класс-представление для добавления товара в корзину
+'''
+class CartAddView(View):
+    def get(self, request, *args, **kwargs):
+        product = get_object_or_404(Product, pk=self.kwargs['product_id'])
+        new_cart = Cart(product=product, user=request.user)
+        new_cart.save()
+
+        button_text = 'В корзине'
+        button_color = 'green'
+
+        return JsonResponse({'button_text': button_text, 'button_color': button_color})

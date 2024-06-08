@@ -33,7 +33,7 @@
                     {% else %}
                         <p class="main-hits-row-card-price">{{ hit.price }} ₽</p>
                     {% endif %}
-                    <a class="main-hits-row-card-btn" href="#">В корзину</a>
+                    <a class="main-hits-row-card-btn" href="{% url 'cart_add' product_id=hit.pk %}">В корзину</a>
                 </div>
             {% endfor %}
         </div>
@@ -57,7 +57,7 @@
                     {% else %}
                         <p class="main-hits-row-card-price">{{ manga.price }} ₽</p>
                     {% endif %}
-                    <a class="main-hits-row-card-btn" href="#">В корзину</a>
+                    <a class="main-hits-row-card-btn" href="{% url 'cart_add' product_id=manga.pk %}">В корзину</a>
                 </div>
             {% endfor %}
         </div>
