@@ -396,3 +396,14 @@ class CartAddView(View):
         button_color = 'green'
 
         return JsonResponse({'button_text': button_text, 'button_color': button_color})
+
+
+'''
+    Класс-представление для удаления из корзины
+'''
+class CartDeleteView(View):
+    def get(self, request, *args, **kwargs):
+        selected_cart = get_object_or_404(Cart, pk=self.kwargs['cart_id'])
+        selected_cart.delete()
+
+        return HttpResponseRedirect(reverse_lazy('cart'))

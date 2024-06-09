@@ -38,7 +38,7 @@
                                 {% endif %}
                             </div>
                             <input class="cart-row-left-item-right-count" type="text" value='{{ cart.amount }}'>
-                            <a href="#"><img class="cart-row-left-item-right-img" src="{% static 'img/icons/icon-delete-cart.png' %}" alt="Delete"></a>
+                            <a href="{% url 'cart_delete' cart_id=cart.pk %}"><img class="cart-row-left-item-right-img" src="{% static 'img/icons/icon-delete-cart.png' %}" alt="Delete"></a>
                         </div>
                     </div>
                 </div>
