@@ -771,6 +771,15 @@ body {
 	padding: 13px 100px;
 }
 
+.product-detail-main-right-btn-green {
+	font-size: 18px;
+	color: white;
+	background-color: green;
+	border-radius: 5px;
+	text-decoration: none;
+	padding: 13px 100px;
+}
+
 .product-detail-main-right-btn:hover {
 	transition: 0.3s linear;
 	background-color: var(--text-link-color-dark);
@@ -1368,6 +1377,14 @@ body {
     text-decoration: none;
     color: var(--button-text-color);
     background-color: var(--text-link-color);
+    border-radius: 5px;
+    padding: 10px 30px;
+}
+
+.product-list-main-row-products-grid-item-btn-green {
+    text-decoration: none;
+    color: var(--button-text-color);
+    background-color: green;
     border-radius: 5px;
     padding: 10px 30px;
 }

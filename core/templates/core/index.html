@@ -61,7 +61,11 @@
                     {% else %}
                         <p class="main-hits-row-card-price">{{ manga.price }} ₽</p>
                     {% endif %}
-                    <a class="main-hits-row-card-btn" href="{% url 'cart_add' product_id=manga.pk %}">В корзину</a>
+                    {% if manga.pk in current_user_cart %}
+                        <a class="main-hits-row-card-btn-green" href="{% url 'cart' %}">В корзине</a>
+                    {% else %}
+                        <a class="main-hits-row-card-btn" href="{% url 'cart_add' product_id=manga.pk %}">В корзину</a>
+                    {% endif %}
                 </div>
             {% endfor %}
         </div>

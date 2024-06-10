@@ -63,7 +63,11 @@
                 <p class="product-detail-main-right-orig">Оригинальная цена</p>
                 <p class="product-detail-main-right-spec-price">{{product.price }} ₽</p>
             {% endif %}
-            <a href="#" class="product-detail-main-right-btn">В корзину</a>
+            {% if product.pk in current_user_cart %}
+                    <a class="product-detail-main-right-btn-green" href="{% url 'cart' %}">В корзине</a>
+            {% else %}
+                    <a class="product-detail-main-right-btn" href="{% url 'cart_add' product_id=product.pk %}">В корзину</a>
+            {% endif %}
             {% if product.category.slug == 'odezhda' %}
             <div class="product-detail-clothers-size">
                 <div class="product-detail-clothers-size-top">

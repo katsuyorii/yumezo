@@ -11,7 +11,7 @@ from django.views.generic.edit import FormMixin
 
 from django.shortcuts import get_object_or_404, redirect
 
-from .models import Category, Product, ProductProperty, Comment, Favorites, Genre, Source
+from .models import Category, Product, ProductProperty, Comment, Favorites, Genre, Source, Cart
 from .forms import AddNewCommentForm, EditCommentForm
 
 from django.contrib.auth.models import AnonymousUser
@@ -56,6 +56,11 @@ class ProductListView(ListView):
         context['genres'] = Genre.objects.all()
         context['sources'] = Source.objects.all()
 
+        if isinstance(self.request.user, AnonymousUser):
+            context['current_user_cart'] = None
+        else:
+             context['current_user_cart'] = Cart.objects.filter(user=self.request.user).values_list('product_id', flat=True)
+
         return context
     
 
@@ -85,9 +90,11 @@ class ProductDetailView(DetailView, FormMixin):
         if isinstance(self.request.user, AnonymousUser):
             context['is_user_comment'] = True
             context['is_favorites'] = False
+            context['current_user_cart'] = None
         else:
             context['is_user_comment'] = Comment.objects.filter(user=self.request.user, product__slug=self.kwargs['product_slug']).exists()
             context['is_favorites'] = Favorites.objects.filter(user=self.request.user, product__slug = self.kwargs['product_slug']).exists()
+            context['current_user_cart'] = Cart.objects.filter(user=self.request.user).values_list('product_id', flat=True)
 
         return context
     
@@ -220,6 +227,11 @@ class SearchProductListView(ListView):
         context['title'] = f'Поиск по сайту: {search_value}'
         context['count_products'] = self.object_list.count()
         context['search_value'] = search_value
+
+        if isinstance(self.request.user, AnonymousUser):
+            context['current_user_cart'] = None
+        else:
+             context['current_user_cart'] = Cart.objects.filter(user=self.request.user).values_list('product_id', flat=True)
 
         return context
     

@@ -22,7 +22,11 @@
                         {% else %}
                             <p class="product-list-main-row-products-grid-item-price">{{ product.price }} ₽</p>
                         {% endif %}
-                        <a class="product-list-main-row-products-grid-item-btn" href="#">В корзину</a>
+                        {% if product.pk in current_user_cart %}
+                            <a class="product-list-main-row-products-grid-item-btn-green" href="{% url 'cart' %}">В корзине</a>
+                        {% else %}
+                            <a class="product-list-main-row-products-grid-item-btn" href="{% url 'cart_add' product_id=product.pk %}">В корзину</a>
+                        {% endif %}
                     </a>
                 </div>
                 {% endfor %}
