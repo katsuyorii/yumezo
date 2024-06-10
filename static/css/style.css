@@ -314,6 +314,14 @@ body {
 	padding: 10px 30px;
 }
 
+.main-hits-row-card-btn-green {
+	text-decoration: none;
+	color: var(--button-text-color);
+	background-color: green;
+	border-radius: 5px;
+	padding: 10px 30px;
+}
+
 .main-hits-row-card-btn:hover {
 	background-color: var(--text-link-color-dark);
 }

@@ -1,6 +1,10 @@
 from django.views.generic import TemplateView, ListView
+
 from .models import SliderImage, NewsProductImage
-from catalog.models import Product
+
+from catalog.models import Product, Cart
+
+from django.contrib.auth.models import AnonymousUser
 
 '''
     Класс-представление для страницы - "Главная".
@@ -21,6 +25,11 @@ class IndexView(ListView):
         context['slider_images'] = SliderImage.objects.all()
         context['news_product_images'] = NewsProductImage.objects.first()
         context['manga_list'] = Product.objects.filter(category__slug='manga', is_active=True)[:5].select_related('category')
+
+        if isinstance(self.request.user, AnonymousUser):
+            context['current_user_cart'] = None
+        else:
+             context['current_user_cart'] = Cart.objects.filter(user=self.request.user).values_list('product_id', flat=True)
 
         return context
 
