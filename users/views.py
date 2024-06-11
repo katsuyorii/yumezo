@@ -379,6 +379,7 @@ class CartUserView(ListView):
             context['all_products_price'] = total_price
             context['all_products_sale'] = total_sale
             context['all_products_price_discounted'] = total_price - total_sale
+            context['all_products_price_delivery'] = (total_price - total_sale) + 500
 
             return context
 

@@ -74,15 +74,19 @@
     <div class="cart-contacts-info-row">
         <div class="cart-contacts-info-row-item">
             <div class="cart-contacts-info-row-item-title">ФИО*</div>
-            <input placeholder="Введите ФИО" class="cart-contacts-info-row-item-input" type="text">
+            <input placeholder="Введите ФИО" class="cart-contacts-info-row-item-input" type="text" value="{{ user.username }}">
         </div>
         <div class="cart-contacts-info-row-item">
             <div class="cart-contacts-info-row-item-title">Телефон*</div>
-            <input placeholder="Введите номер телефона" class="cart-contacts-info-row-item-input" type="text">
+            {% if user.phone_number %}
+                <input placeholder="Введите номер телефона" class="cart-contacts-info-row-item-input" type="text" value="{{ user.phone_number }}">
+            {% else %}
+                <input placeholder="Введите номер телефона" class="cart-contacts-info-row-item-input" type="text">
+            {% endif %}
         </div>
         <div class="cart-contacts-info-row-item">
             <div class="cart-contacts-info-row-item-title">E-mail*</div>
-            <input placeholder="Введите адрес электронной почты" class="cart-contacts-info-row-item-input" type="text">
+            <input placeholder="Введите адрес электронной почты" class="cart-contacts-info-row-item-input" type="text" value="{{ user.email }}">
         </div>
     </div>
 </div>
@@ -116,7 +120,7 @@
     <h1 class="cart-contacts-info-comment-title">Комментарий к заказу</h1>
     <textarea class="cart-contacts-info-comment" name="comment" id="comment"></textarea>
     <div class="cart-contacts-info-line"></div>
-    <p class="cart-contacts-info-prices-title">Общая стоимость с учетом доставки 1 295 ₽</p>
+    <p class="cart-contacts-info-prices-title">Общая стоимость с учетом доставки {{ all_products_price_delivery }} ₽</p>
     <a href="#" class="cart-contacts-info-btn">Подтвердить заказ</a>
 </div>
 {% endif %}
