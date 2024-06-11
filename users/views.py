@@ -408,3 +408,16 @@ class CartDeleteView(View):
         selected_cart.delete()
 
         return HttpResponseRedirect(reverse_lazy('cart'))
+
+
+'''
+    Класс-представление для очистки корзины
+'''
+class CartClearView(View):
+    def get(self, request, *args, **kwargs):
+        carts_user = Cart.objects.filter(user=request.user)
+        carts_user.delete()
+        
+        messages.success(request, 'Корзина успешно очищена!')
+
+        return HttpResponseRedirect(reverse_lazy('cart'))
