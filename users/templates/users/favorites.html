@@ -31,7 +31,11 @@
                         {% else %}
                             <p class="product-list-main-row-products-grid-item-price">{{ favor.product.price }} ₽</p>
                         {% endif %}
-                        <a class="product-list-main-row-products-grid-item-btn-forever" href="#">В корзину</a>
+                        {% if favor.pk in current_user_cart %}
+                            <a class="product-list-main-row-products-grid-item-btn-forever-green" href="{% url 'cart' %}">В корзине</a>
+                        {% else %}
+                            <a class="product-list-main-row-products-grid-item-btn-forever" href="{% url 'cart_add' product_id=favor.pk %}">В корзину</a>
+                        {% endif %}
                         <br>
                         <br>
                         <form action="{{ favor.get_absolute_url }}">

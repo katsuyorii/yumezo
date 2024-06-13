@@ -9,6 +9,7 @@ from django.contrib import messages
 from django.contrib.auth import login, logout
 from django.contrib.auth.views import PasswordChangeView
 from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.models import AnonymousUser
 
 from django.urls import reverse_lazy
 
@@ -257,6 +258,11 @@ class FavoritesUserView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['title'] = 'Избранное'
+
+        if isinstance(self.request.user, AnonymousUser):
+            context['current_user_cart'] = None
+        else:
+             context['current_user_cart'] = Cart.objects.filter(user=self.request.user).values_list('product_id', flat=True)
 
         return context
     

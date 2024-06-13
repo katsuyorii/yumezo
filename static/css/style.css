@@ -1605,6 +1605,14 @@ body {
     padding: 10px 30px;
 }
 
+.product-list-main-row-products-grid-item-btn-forever-green {
+	text-decoration: none;
+    color: var(--button-text-color);
+    background-color: green;
+    border-radius: 5px;
+    padding: 10px 30px;
+}
+
 .no-items {
     display: flex;
     width: 886px;
