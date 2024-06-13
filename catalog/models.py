@@ -247,11 +247,12 @@ class Order(models.Model):
     apart = models.PositiveSmallIntegerField(verbose_name='Квартира')
     postcode = models.IntegerField(verbose_name='Почтовый индекс')
     create_date = models.DateField(auto_now_add=True, db_index=True)
+    total_price = models.PositiveIntegerField('Общая стоимость заказа', default=0)
     comment = models.TextField(verbose_name='Комментарий к заказу', null=True, blank=True)
     status = models.CharField(verbose_name='Статус заказа', choices=Status.choices, default=Status.CR)
 
     def __str__(self):
-        return f'{self.user.username} | {self.user.email} | {self.create_date}'
+        return f'{self.user.username} | {self.user.username} | {self.create_date} | {self.total_price}'
     
     class Meta:
         verbose_name = 'Заказ пользователя'

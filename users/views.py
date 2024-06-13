@@ -17,8 +17,11 @@ from django.utils.http import urlsafe_base64_decode
 from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm, ForgotPasswordChangeForm, ForgotPasswordEmailForm, OrderForm
 from .models import User
 from .tasks import activate_email_task, forgot_password_email_task
+from .services import calculate_total_cart_sale, calculate_total_cart_price
 
 from catalog.models import Favorites, Cart, Product
+
+from django.db import transaction
 
 
 '''
@@ -370,33 +373,32 @@ class CartUserView(ListView, FormMixin):
     def get_context_data(self, **kwargs):
             context = super().get_context_data(**kwargs)
 
-            PRICE_DELIVERY = 500
-            total_price = 0
-            total_sale = 0
-
-            for cart in self.object_list:
-                total_price += cart.amount * cart.product.price_discount() if cart.product.discount else  cart.amount * cart.product.price
-                total_sale += cart.amount * (cart.product.price_discount() - cart.product.price) if cart.product.discount else 0
+            total_price = calculate_total_cart_price(self.object_list)
+            total_sale = calculate_total_cart_sale(self.object_list)
 
             context['title'] = 'Корзина'
             context['amount_products'] = self.object_list.count()
             context['all_products_price'] = total_price
             context['all_products_sale'] = total_sale
             context['all_products_price_discounted'] = total_price - total_sale
-            context['all_products_price_delivery'] = (total_price - total_sale) + PRICE_DELIVERY
 
             return context
     
     def get_success_url(self):
         return reverse_lazy('profile')
 
+    @transaction.atomic
     def post(self, request, *args, **kwargs):
         carts = self.get_queryset()
         form = self.get_form()
+        total_price = calculate_total_cart_price(carts)
+        total_sale = calculate_total_cart_sale(carts)
+        total_price_sale = total_price - total_sale
 
         if form.is_valid():
             new_order = form.save(commit=False)
             new_order.user = self.request.user
+            new_order.total_price = total_price_sale
             new_order.save()
 
             new_order.carts.set(carts)

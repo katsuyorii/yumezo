@@ -39,3 +39,26 @@ class SendEmail:
         )  
 
         self.user.email_user(subject=subject, message=message)
+
+
+''' 
+    Функция рассчета общей цены корзины
+'''
+def calculate_total_cart_price(carts):
+    total_price = 0
+
+    for cart in carts:
+        total_price += cart.amount * cart.product.price_discount() if cart.product.discount else  cart.amount * cart.product.price
+
+    return total_price
+
+''' 
+    Функция рассчета общей скидки корзины
+'''
+def calculate_total_cart_sale(carts):
+    total_sale = 0
+
+    for cart in carts:
+        total_sale += cart.amount * (cart.product.price_discount() - cart.product.price) if cart.product.discount else 0
+
+    return total_sale
