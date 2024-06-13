@@ -3,6 +3,7 @@ from django.http import HttpResponseRedirect, JsonResponse
 from django.shortcuts import get_object_or_404, redirect
 
 from django.views.generic import FormView, TemplateView, View, UpdateView, ListView
+from django.views.generic.edit import FormMixin
 
 from django.contrib import messages
 from django.contrib.auth import login, logout
@@ -13,7 +14,7 @@ from django.urls import reverse_lazy
 
 from django.utils.http import urlsafe_base64_decode
 
-from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm, ForgotPasswordChangeForm, ForgotPasswordEmailForm
+from .forms import LoginUserForm, RegistrationUserForm, ChangePasswordUserForm, EditInfoUserForm, ForgotPasswordChangeForm, ForgotPasswordEmailForm, OrderForm
 from .models import User
 from .tasks import activate_email_task, forgot_password_email_task
 
@@ -355,10 +356,11 @@ class ForgotPasswordChangeView(FormView):
 '''
     Класс-представление для корзины пользователя
 '''
-class CartUserView(ListView):
+class CartUserView(ListView, FormMixin):
     model = Cart
     template_name = 'users/cart.html'
     context_object_name = 'carts'
+    form_class = OrderForm
 
     def get_queryset(self):
         queryset = Cart.objects.filter(user=self.request.user)
@@ -384,6 +386,32 @@ class CartUserView(ListView):
             context['all_products_price_delivery'] = (total_price - total_sale) + PRICE_DELIVERY
 
             return context
+    
+    def get_success_url(self):
+        return reverse_lazy('profile')
+
+    def post(self, request, *args, **kwargs):
+        carts = self.get_queryset()
+        form = self.get_form()
+
+        if form.is_valid():
+            new_order = form.save(commit=False)
+            new_order.user = self.request.user
+            new_order.save()
+
+            new_order.carts.set(carts)
+
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+        
+    def form_valid(self, form):
+        messages.success(self.request, 'Заказ был успешно создан!')
+        return super().form_valid(form)
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Ошибка при заполнении формы!')
+        return HttpResponseRedirect('cart')
 
 
 '''

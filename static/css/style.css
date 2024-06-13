@@ -1107,8 +1107,10 @@ body {
 	color: white;
 	border-radius: 5px;
 	background-color: var(--text-link-color);
+	border: 0px solid var(--text-link-color);
 	padding: 13px 25px;
 	text-decoration: none;
+	cursor: pointer;
 }
 
 .cart-contacts-info-btn:hover {

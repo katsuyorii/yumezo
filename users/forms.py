@@ -5,6 +5,7 @@ from django import forms
 from django.contrib.auth.forms import PasswordChangeForm
 
 from .models import User
+from catalog.models import Order
 from django.contrib.auth import authenticate
 
 from django.contrib.auth.password_validation import validate_password
@@ -164,3 +165,42 @@ class ForgotPasswordChangeForm(forms.Form):
             raise forms.ValidationError('Введенные пароли отличаются!')
         
         return password2
+    
+
+'''
+    Класс для формы оформления заказа
+'''
+class OrderForm(forms.ModelForm):
+    city = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'cart-contacts-info-row-item-input', 
+        'placeholder': 'Введите населенный пункт',
+    }))
+
+    street = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'cart-contacts-info-row-item-input', 
+        'placeholder': 'Введите улицу',
+    }))
+
+    house = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'cart-contacts-info-row-item-input', 
+        'placeholder': 'Введите дом или корпус',
+    }))
+
+    apart = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'cart-contacts-info-row-item-input', 
+        'placeholder': 'Введите квартиру',
+    }))
+
+    postcode = forms.CharField(widget=forms.TextInput(attrs={
+        'class': 'cart-contacts-info-row-item-input', 
+        'placeholder': 'Введите почтовый индекс',
+    }))
+
+    comment = forms.CharField(widget=forms.Textarea(attrs={
+        'class': 'cart-contacts-info-comment', 
+        'placeholder': 'Введите комментарий к заказу...',
+    }))
+
+    class Meta:
+        model = Order
+        fields = ['city', 'street', 'house', 'apart', 'postcode', 'comment']

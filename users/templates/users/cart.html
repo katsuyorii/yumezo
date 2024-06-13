@@ -69,59 +69,41 @@
     </div>
 </div>
 
-<div class="cart-contacts-info">
-    <h1 class="cart-contacts-info-title">Контактная информация</h1>
-    <div class="cart-contacts-info-row">
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">ФИО*</div>
-            <input placeholder="Введите ФИО" class="cart-contacts-info-row-item-input" type="text" value="{{ user.username }}">
-        </div>
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">Телефон*</div>
-            {% if user.phone_number %}
-                <input placeholder="Введите номер телефона" class="cart-contacts-info-row-item-input" type="text" value="{{ user.phone_number }}">
-            {% else %}
-                <input placeholder="Введите номер телефона" class="cart-contacts-info-row-item-input" type="text">
-            {% endif %}
-        </div>
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">E-mail*</div>
-            <input placeholder="Введите адрес электронной почты" class="cart-contacts-info-row-item-input" type="text" value="{{ user.email }}">
-        </div>
-    </div>
-</div>
-
-<div class="cart-contacts-delivery">
-    <h1 class="cart-contacts-info-title">Способ доставки</h1>
-    <div class="cart-contacts-info-row">
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">Город / Населенный пункт*</div>
-            <input placeholder="Введите населенный пункт" class="cart-contacts-info-row-item-input" type="text">
-        </div>
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">Улица*</div>
-            <input placeholder="Введите улицу" class="cart-contacts-info-row-item-input" type="text">
-        </div>
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">Дом, корпус*</div>
-            <input placeholder="Введите дом или корпус" class="cart-contacts-info-row-item-input" type="text">
-        </div>
-    </div>
-    <div class="cart-contacts-info-row-two">
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">Квартира*</div>
-            <input placeholder="Введите квартиру" class="cart-contacts-info-row-item-input" type="text">
-        </div>
-        <div class="cart-contacts-info-row-item">
-            <div class="cart-contacts-info-row-item-title">Почтовый индекс*</div>
-            <input placeholder="Введите почтовый индекс" class="cart-contacts-info-row-item-input" type="text">
-        </div>
-    </div>
-    <h1 class="cart-contacts-info-comment-title">Комментарий к заказу</h1>
-    <textarea class="cart-contacts-info-comment" name="comment" id="comment"></textarea>
-    <div class="cart-contacts-info-line"></div>
-    <p class="cart-contacts-info-prices-title">Общая стоимость с учетом доставки {{ all_products_price_delivery }} ₽</p>
-    <a href="#" id="order_confirm" class="cart-contacts-info-btn">Подтвердить заказ</a>
+<form method="POST">
+    {% csrf_token %}
+    
+    <div class="cart-contacts-delivery">
+            <h1 class="cart-contacts-info-title">Способ доставки</h1>
+            <div class="cart-contacts-info-row">
+                <div class="cart-contacts-info-row-item">
+                    <div class="cart-contacts-info-row-item-title" for="{{ form.city.id_for_label }}">Город / Населенный пункт*</div>
+                    {{ form.city }}
+                </div>
+                <div class="cart-contacts-info-row-item">
+                    <div class="cart-contacts-info-row-item-title" for="{{ form.street.id_for_label }}">Улица*</div>
+                    {{ form.street }}
+                </div>
+                <div class="cart-contacts-info-row-item">
+                    <div class="cart-contacts-info-row-item-title" for="{{ form.house.id_for_label }}">Дом, корпус*</div>
+                    {{ form.house }}
+                </div>
+            </div>
+            <div class="cart-contacts-info-row-two">
+                <div class="cart-contacts-info-row-item">
+                    <div class="cart-contacts-info-row-item-title" for="{{ form.apart.id_for_label }}">Квартира*</div>
+                    {{ form.apart }}
+                </div>
+                <div class="cart-contacts-info-row-item">
+                    <div class="cart-contacts-info-row-item-title" for="{{ form.postcode.id_for_label }}">Почтовый индекс*</div>
+                    {{ form.postcode }}
+                </div>
+            </div>
+            <h1 class="cart-contacts-info-comment-title" for="{{ form.comment.id_for_label }}">Комментарий к заказу</h1>
+            {{ form.comment }}
+            <div class="cart-contacts-info-line"></div>
+            <p class="cart-contacts-info-prices-title">Общая стоимость с учетом доставки {{ all_products_price_delivery }} ₽</p>
+            <button type="submit" id="order_confirm" class="cart-contacts-info-btn">Подтвердить заказ</button>
+</form>
 </div>
 {% endif %}
 {% endblock content %}
