@@ -19,8 +19,8 @@ $(document).ready(function() {
         var minPrice = $('input[name="min_price"]').val();
         var maxPrice = $('input[name="max_price"]').val();
 
-        minPrice = minPrice.replace(/[^0-9]/g, '');
-        maxPrice = maxPrice.replace(/[^0-9]/g, '');
+        minPrice = parseInt(minPrice.replace(/[^0-9]/g, ''));
+        maxPrice = parseInt(maxPrice.replace(/[^0-9]/g, ''));
 
         if (isNaN(minPrice) == true) {
             minPrice = 0;
