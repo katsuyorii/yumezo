@@ -227,3 +227,33 @@ class Cart(models.Model):
     class Meta:
         verbose_name = 'Корзина пользователя'
         verbose_name_plural = 'Корзины пользователей'
+
+
+'''
+    Модель описывающая заказ пользователя
+'''
+class Order(models.Model):
+    class Status(models.TextChoices):
+        CR = 'CR', 'Создан'
+        DEL = 'DEL', 'В доставке'
+        CONF_DEL = 'CONF_DEL', 'Доставлен'
+        REC = 'REC', 'Получен'
+
+    user = models.ForeignKey(verbose_name='Пользователь', to=User, on_delete=models.CASCADE)
+    carts = models.ManyToManyField(verbose_name='Продукты для заказа', to=Cart)
+    city = models.CharField(verbose_name='Город / Населенный пункт', max_length=255)
+    street = models.CharField(verbose_name='Улица', max_length=255)
+    house = models.PositiveSmallIntegerField(verbose_name='Дом / корпус')
+    apart = models.PositiveSmallIntegerField(verbose_name='Квартира')
+    postcode = models.IntegerField(verbose_name='Почтовый индекс')
+    create_date = models.DateField(auto_now_add=True, db_index=True)
+    total_price = models.PositiveIntegerField('Общая стоимость заказа')
+    comment = models.TextField(verbose_name='Комментарий к заказу', null=True, blank=True)
+    status = models.CharField(verbose_name='Статус заказа', choices=Status.choices, default=Status.CR)
+
+    def __str__(self):
+        return f'{self.user.username} | {self.create_date} | {self.total_price}'
+    
+    class Meta:
+        verbose_name = 'Заказ пользователя'
+        verbose_name_plural = 'Заказы пользователей'

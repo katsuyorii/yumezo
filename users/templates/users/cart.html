@@ -63,7 +63,7 @@
             </div>
             <div class="cart-row-right-btns">
                 <a href="{% url 'cart_clear' %}" class="cart-row-right-btns-clear">Очистить корзину</a>
-                <a href="#" class="cart-row-right-btns-oform">Оформить заказ</a>
+                <a href="#order_confirm" class="cart-row-right-btns-oform">Оформить заказ</a>
             </div>
         </div>
     </div>
@@ -121,7 +121,7 @@
     <textarea class="cart-contacts-info-comment" name="comment" id="comment"></textarea>
     <div class="cart-contacts-info-line"></div>
     <p class="cart-contacts-info-prices-title">Общая стоимость с учетом доставки {{ all_products_price_delivery }} ₽</p>
-    <a href="#" class="cart-contacts-info-btn">Подтвердить заказ</a>
+    <a href="#" id="order_confirm" class="cart-contacts-info-btn">Подтвердить заказ</a>
 </div>
 {% endif %}
 {% endblock content %}
