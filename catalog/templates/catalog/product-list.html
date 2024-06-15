@@ -54,8 +54,10 @@
                         {% endif %}
                         {% if product.pk in current_user_cart %}
                             <a class="product-list-main-row-products-grid-item-btn-green" href="{% url 'cart' %}">В корзине</a>
-                        {% else %}
+                        {% elif user.is_active %}
                             <a class="product-list-main-row-products-grid-item-btn" href="{% url 'cart_add' product_id=product.pk %}">В корзину</a>
+                        {% else %}
+                            <a class="product-list-main-row-products-grid-item-btn-no-ajax" href="{% url 'activate_email_done' %}">В корзину</a>
                         {% endif %}
                     </a>
                 </div>

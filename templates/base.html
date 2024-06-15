@@ -52,7 +52,11 @@
                     </div>
                     <div class="main-row-right">
                         <div class="main-row-right-item">
-                            <a class="main-row-right-item-link" href="{% url 'favorites' %}">
+                            {% if user.is_active %}
+                                <a class="main-row-right-item-link" href="{% url 'favorites' %}">
+                            {% else %}
+                                <a class="main-row-right-item-link" href="{% url 'activate_email_done' %}">
+                            {% endif %}
                                 <img class="main-row-right-item-img" src="{% static 'img/icons/icon-love.png' %}" alt="Love">
                                 <p class="main-row-right-item-text">Избранное</p>
                             </a>
@@ -64,7 +68,11 @@
                             </a>
                         </div>
                         <div class="main-row-right-item">
-                            <a class="main-row-right-item-link" href="{% url 'cart' %}">
+                            {% if user.is_active %}
+                                <a class="main-row-right-item-link" href="{% url 'cart' %}">
+                            {% else %}
+                                <a class="main-row-right-item-link" href="{% url 'activate_email_done' %}">
+                            {% endif %}
                                 <img class="main-row-right-item-img-cart" src="{% static 'img/icons/icon-cart.png' %}" alt="Cart">
                                 <p class="main-row-right-item-text">Корзина</p>
                             </a>

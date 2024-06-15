@@ -322,6 +322,14 @@ body {
 	padding: 10px 30px;
 }
 
+.main-hits-row-card-btn-no-ajax {
+	text-decoration: none;
+	color: var(--button-text-color);
+	background-color: var(--text-link-color);
+	border-radius: 5px;
+	padding: 10px 30px;
+}
+
 .main-hits-row-card-btn:hover {
 	background-color: var(--text-link-color-dark);
 }
@@ -775,6 +783,15 @@ body {
 	font-size: 18px;
 	color: white;
 	background-color: green;
+	border-radius: 5px;
+	text-decoration: none;
+	padding: 13px 100px;
+}
+
+.product-detail-main-right-btn-no-ajax {
+	font-size: 18px;
+	color: white;
+	background-color: var(--text-link-color);
 	border-radius: 5px;
 	text-decoration: none;
 	padding: 13px 100px;
@@ -1387,6 +1404,14 @@ body {
     text-decoration: none;
     color: var(--button-text-color);
     background-color: green;
+    border-radius: 5px;
+    padding: 10px 30px;
+}
+
+.product-list-main-row-products-grid-item-btn-no-ajax {
+	text-decoration: none;
+    color: var(--button-text-color);
+    background-color: var(--text-link-color);
     border-radius: 5px;
     padding: 10px 30px;
 }

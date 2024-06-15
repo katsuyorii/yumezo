@@ -35,8 +35,10 @@
                     {% endif %}
                     {% if hit.pk in current_user_cart %}
                         <a class="main-hits-row-card-btn-green" href="{% url 'cart' %}">В корзине</a>
-                    {% else %}
+                    {% elif user.is_active %}
                         <a class="main-hits-row-card-btn" href="{% url 'cart_add' product_id=hit.pk %}">В корзину</a>
+                    {% else %}
+                        <a class="main-hits-row-card-btn-no-ajax" href="{% url 'activate_email_done' %}">В корзину</a>
                     {% endif %}
                 </div>
             {% endfor %}
@@ -63,8 +65,10 @@
                     {% endif %}
                     {% if manga.pk in current_user_cart %}
                         <a class="main-hits-row-card-btn-green" href="{% url 'cart' %}">В корзине</a>
-                    {% else %}
+                    {% elif user.is_active %}
                         <a class="main-hits-row-card-btn" href="{% url 'cart_add' product_id=manga.pk %}">В корзину</a>
+                    {% else %}
+                        <a class="main-hits-row-card-btn" href="{% url 'activate_email_done' %}">В корзину</a>
                     {% endif %}
                 </div>
             {% endfor %}

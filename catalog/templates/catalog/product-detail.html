@@ -65,8 +65,10 @@
             {% endif %}
             {% if product.pk in current_user_cart %}
                     <a class="product-detail-main-right-btn-green" href="{% url 'cart' %}">В корзине</a>
-            {% else %}
+            {% elif user.is_active %}
                     <a class="product-detail-main-right-btn" href="{% url 'cart_add' product_id=product.pk %}">В корзину</a>
+            {% else %}
+                    <a class="product-detail-main-right-btn-no-ajax" href="{% url 'activate_email_done' %}">В корзину</a>
             {% endif %}
             {% if product.category.slug == 'odezhda' %}
             <div class="product-detail-clothers-size">
@@ -100,7 +102,7 @@
     </div>
     <div class="product-detail-reviews">
         <h2 id="review" class="product-detail-reviews-h">Отзывы</h2>
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.is_active %}
             {% if not is_user_comment %}
                 <form method="POST">
                     {% csrf_token %}
