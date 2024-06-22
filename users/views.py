@@ -20,7 +20,7 @@ from .models import User
 from .tasks import activate_email_task, forgot_password_email_task
 from .services import calculate_total_cart_sale, calculate_total_cart_price
 
-from catalog.models import Favorites, Cart, Product
+from catalog.models import Favorites, Cart, Product, Order
 
 from django.db import transaction
 
@@ -459,3 +459,25 @@ class CartClearView(View):
         messages.success(request, 'Корзина успешно очищена!')
 
         return HttpResponseRedirect(reverse_lazy('cart'))
+    
+
+'''
+    Класс-представление для истории заказов пользователей
+'''
+class OrdersUserView(ListView):
+    model = Order
+    template_name = 'users/orders.html'
+    context_object_name = 'orders'
+
+    def get_queryset(self):
+        queryset = Order.objects.filter(user=self.request.user)
+
+        return queryset
+
+    def get_context_data(self, **kwargs):
+            context = super().get_context_data(**kwargs)
+
+            context['title'] = 'История заказов'
+
+            return context
+

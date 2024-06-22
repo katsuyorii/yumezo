@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView, EditInfoUserView, ActivateEmailDoneView, ActivateEmailCheckView, ActivateEmailConfirmView, ActivateEmailErrorView, ActivateEmailRepeatSendView, FavoritesUserView, FavoritesDeleteUserView, ForgotPasswordChangeView, ForgotPasswordEmailCheckView, ForgotPasswordEmailView, CartUserView, CartAddView, CartDeleteView, CartClearView
+from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView, EditInfoUserView, ActivateEmailDoneView, ActivateEmailCheckView, ActivateEmailConfirmView, ActivateEmailErrorView, ActivateEmailRepeatSendView, FavoritesUserView, FavoritesDeleteUserView, ForgotPasswordChangeView, ForgotPasswordEmailCheckView, ForgotPasswordEmailView, CartUserView, CartAddView, CartDeleteView, CartClearView, OrdersUserView
 
 from django.contrib.auth.decorators import login_required
 
@@ -18,6 +18,8 @@ urlpatterns = [
 
     path('favorites/', login_required(FavoritesUserView.as_view()), name='favorites'),
     path('delete-favorites/<int:favorites_id>', login_required(FavoritesDeleteUserView.as_view()), name='delete_favorites'),
+
+    path('orders/', login_required(OrdersUserView.as_view()), name='orders'),
 
     path('activate-email-done/', login_required(ActivateEmailDoneView.as_view()), name='activate_email_done'),
     path('activate-email-check/<uidb64>/<token>/', login_required(ActivateEmailCheckView.as_view()), name='activate_email_check'),

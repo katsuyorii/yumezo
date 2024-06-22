@@ -8,7 +8,7 @@
             <img class="profile-row-links-img" src="{% static 'img/default.png' %}" alt="Profile Logo">
         {% endif %}
     </span>
-    <a class="profile-row-links-a" href="#">История заказов</a>
+    <a class="profile-row-links-a" href="{% url 'orders' %}">История заказов</a>
     <a class="profile-row-links-a" href="{% url 'favorites' %}">Избранное</a>
     <a class="profile-row-links-a" href="{% url 'cart' %}">Корзина</a>
     <a class="profile-row-links-a" href="{% url 'logout' %}">Выход</a>

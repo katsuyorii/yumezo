@@ -240,7 +240,7 @@ class Order(models.Model):
         REC = 'REC', 'Получен'
 
     user = models.ForeignKey(verbose_name='Пользователь', to=User, on_delete=models.CASCADE)
-    carts = models.ManyToManyField(verbose_name='Продукты для заказа', to=Cart)
+    products = models.ManyToManyField(verbose_name='Продукты для заказа', to=Product)
     city = models.CharField(verbose_name='Город / Населенный пункт', max_length=255)
     street = models.CharField(verbose_name='Улица', max_length=255)
     house = models.PositiveSmallIntegerField(verbose_name='Дом / корпус')

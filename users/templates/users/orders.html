@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="catalog-list-main-row-link">
+        <a class="catalog-list-main-row-link-item" href="{% url 'index' %}">Главная</a>
+        <p>-</p>
+        <a class="catalog-list-main-row-link-item" href="{% url 'orders' %}">Заказы</a>
+    </div>
+
+<div class="profile-row">
+
+    {% include "profile-menu.html" %}
+
+    <div class="profile-row-info">
+        {% if  orders|length == 0 %}
+            <div class="cart-empty">
+                <p class="cart-empty-text">У вас еще не было заказов!</p>
+            </div>
+        {% else %}
+            <div class="profile-row-info">
+                {% for order in orders %}
+                    <div class="orders-item">
+                        <div class="orders-item-row">
+                            <a class="orders-item-date">Заказ от {{ order.create_date }}</a>
+                            <h1 class="orders-item-price">Статус: {{ order.get_status_display }}</h1>
+                            <h1 class="orders-item-price">Оплачено {{ order.total_price }} ₽</h1>
+                        </div>
+                        <div class="orders-item-imgs">
+                            {% for product in order.products.all %}
+                                <img class="orders-item-imgs-img" src="{{ product.image.url }}" alt="Product logo">
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock content %}

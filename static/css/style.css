@@ -1836,3 +1836,37 @@ body {
     margin-top: 30px;
     color: var(--header-text-color)
 }
+
+.orders-item {
+	border: 1px solid var(--header-text-color);
+	background-color: var(--header-bg-color);
+	border-radius: 10px;
+	height: 120px;
+	padding: 15px 15px;
+	margin-bottom: 12px;
+}
+
+.orders-item-row {
+	display: flex;
+	justify-content: space-between;
+}
+
+.orders-item-date {
+	text-decoration: none;
+	color: black;
+	font-weight: 500;
+}
+
+.orders-item-price {
+	font-weight: 500;
+}
+
+.orders-item-imgs {
+	display: flex;
+	column-gap: 10px;
+	margin-top: 7px;
+}
+
+.orders-item-imgs-img {
+	height: 100px;
+}
