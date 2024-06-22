@@ -410,8 +410,12 @@ class CartUserView(ListView, FormMixin):
             all_products = []
             for cart in carts:
                 all_products.append(cart.product)
+                cart.product.count_sales += cart.amount
+                cart.product.save()
 
             new_order.products.set(all_products)
+            
+            carts.delete()
 
             return self.form_valid(form)
         else:

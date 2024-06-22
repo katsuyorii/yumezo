@@ -94,7 +94,6 @@ class Product(models.Model):
     description = models.TextField(verbose_name='Описание товара')
     price = models.PositiveIntegerField(verbose_name='Цена', help_text='Цена указывается в рублях (руб.)')
     discount = models.PositiveIntegerField(verbose_name='Скидка', default=0, help_text='Скидка указывается в процентах (%)')
-    amount = models.PositiveIntegerField(verbose_name='Количество в наличии', default=0)
     is_active = models.BooleanField(verbose_name='Активный продукт', default=False)
     count_sales = models.PositiveIntegerField(verbose_name='Количество продаж', default=0, editable=False)
     rating = models.SmallIntegerField(verbose_name='Средний рейтинг товара', default=0, editable=False)

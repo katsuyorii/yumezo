@@ -14,9 +14,7 @@
 
     <div class="profile-row-info">
         {% if  orders|length == 0 %}
-            <div class="cart-empty">
-                <p class="cart-empty-text">У вас еще не было заказов!</p>
-            </div>
+            {% include "no-items.html" %}
         {% else %}
             <div class="profile-row-info">
                 {% for order in orders %}
