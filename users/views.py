@@ -372,7 +372,7 @@ class CartUserView(ListView, FormMixin):
     form_class = OrderForm
 
     def get_queryset(self):
-        queryset = Cart.objects.filter(user=self.request.user)
+        queryset = Cart.objects.filter(user=self.request.user).select_related('product__category')
 
         return queryset
 
@@ -406,8 +406,12 @@ class CartUserView(ListView, FormMixin):
             new_order.user = self.request.user
             new_order.total_price = total_price_sale
             new_order.save()
+            
+            all_products = []
+            for cart in carts:
+                all_products.append(cart.product)
 
-            new_order.carts.set(carts)
+            new_order.products.set(all_products)
 
             return self.form_valid(form)
         else:
@@ -470,7 +474,7 @@ class OrdersUserView(ListView):
     context_object_name = 'orders'
 
     def get_queryset(self):
-        queryset = Order.objects.filter(user=self.request.user)
+        queryset = Order.objects.filter(user=self.request.user).prefetch_related('products')
 
         return queryset
 
