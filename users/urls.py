@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView, EditInfoUserView, ActivateEmailDoneView, ActivateEmailCheckView, ActivateEmailConfirmView, ActivateEmailErrorView, ActivateEmailRepeatSendView, FavoritesUserView, FavoritesDeleteUserView, ForgotPasswordChangeView, ForgotPasswordEmailCheckView, ForgotPasswordEmailView, CartUserView, CartAddView, CartDeleteView, CartClearView, OrdersUserView
+from .views import LoginUserView, RegistrationUserView, ProfileUserView, LogoutUserView, ChangePasswordUserView, EditInfoUserView, ActivateEmailDoneView, ActivateEmailCheckView, ActivateEmailConfirmView, ActivateEmailErrorView, ActivateEmailRepeatSendView, FavoritesUserView, FavoritesDeleteUserView, ForgotPasswordChangeView, ForgotPasswordEmailCheckView, ForgotPasswordEmailView, CartUserView, CartAddView, CartDeleteView, CartClearView, OrdersUserView, CartChangeView
 
 from django.contrib.auth.decorators import login_required
 
@@ -12,6 +12,7 @@ urlpatterns = [
     path('profile-edit/', login_required(EditInfoUserView.as_view()), name='profile_edit'),
 
     path('cart/', login_required(CartUserView.as_view()), name='cart'),
+    path('cart_change/', login_required(CartChangeView.as_view()), name='cart_change'),
     path('cart-add/<int:product_id>', login_required(CartAddView.as_view()), name='cart_add'),
     path('cart-delete/<int:cart_id>', login_required(CartDeleteView.as_view()), name='cart_delete'),
     path('cart-clear/', login_required(CartClearView.as_view()), name='cart_clear'),

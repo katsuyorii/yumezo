@@ -8,7 +8,7 @@ from django.views.decorators.cache import cache_page
 
 
 urlpatterns = [
-    path('', CatalogView.as_view(), name='catalog'),
+    path('', cache_page(60*2)(CatalogView.as_view()), name='catalog'),
     path('dynamic-filters/', DynamicFiltersProducts.as_view(), name='dynamic-filters'),
     path('search/', SearchProductListView.as_view(), name='search'),
     path('<slug:category_slug>/', ProductListView.as_view(), name='product_list'),

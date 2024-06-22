@@ -22,22 +22,22 @@
                         <div class="cart-row-left-item-left">
                             <img src="{{ cart.product.image.url }}" alt="Item" class="cart-row-left-item-left-img">
                             <div class="cart-row-left-item-left-div">
-                                <a href="{{ cart.product.get_absolute_url }}" class="cart-row-left-item-left-name">{{ cart.product.name }}</a>
+                                <a id="{{ cart.pk }}" href="{{ cart.product.get_absolute_url }}" class="cart-row-left-item-left-name">{{ cart.product.name }}</a>
                                 {% if cart.product.discount %}
-                                <p class="cart-row-left-item-left-sale">Скидка {{ cart.product.discount }}%</p>
+                                    <p class="cart-row-left-item-left-sale">Скидка {{ cart.product.discount }}%</p>
                                 {% endif %}
                             </div>
                         </div>
                         <div class="cart-row-left-item-right">
                             <div class="cart-row-left-item-right-price-div">
                                 {% if cart.product.discount %}
-                                <p class="cart-row-left-item-right-price-red">{{ cart.total_price_not_sale }} ₽</p>
-                                <p class="cart-row-left-item-right-price-through">{{ cart.total_price_sale }} ₽</p>
+                                    <p id="total_price_not_sale" class="cart-row-left-item-right-price-red">{{ cart.total_price_not_sale }} ₽</p>
+                                    <p id="total_price_sale" class="cart-row-left-item-right-price-through">{{ cart.total_price_sale }} ₽</p>
                                 {% else %}
-                                <p class="cart-row-left-item-right-price">{{ cart.total_price_not_sale }} ₽</p>
+                                    <p id="total_price_not_sale" class="cart-row-left-item-right-price">{{ cart.total_price_not_sale }} ₽</p>
                                 {% endif %}
                             </div>
-                            <input class="cart-row-left-item-right-count" type="text" value='{{ cart.amount }}'>
+                            <input name="amount" class="cart-row-left-item-right-count" type="text" value='{{ cart.amount }}'>
                             <a href="{% url 'cart_delete' cart_id=cart.pk %}"><img class="cart-row-left-item-right-img" src="{% static 'img/icons/icon-delete-cart.png' %}" alt="Delete"></a>
                         </div>
                     </div>
@@ -50,16 +50,16 @@
             <p class="cart-row-right-title">Ваша корзина</p>
             <div class="cart-row-right-products">
                 <p class="cart-row-right-product-title">Товары ({{ amount_products }})</p>
-                <p class="cart-row-right-product-price">{{ all_products_price }} ₽</p>
+                <p id="all_products_price" class="cart-row-right-product-price">{{ all_products_price }} ₽</p>
             </div>
             <div class="cart-row-right-sales">
                 <p class="cart-row-right-product-title">Скидка</p>
-                <p class="cart-row-right-product-price-sale">- {{ all_products_sale }} ₽</p>
+                <p id="all_products_sale" class="cart-row-right-product-price-sale">- {{ all_products_sale }} ₽</p>
             </div>
             <div class="cart-row-right-line"></div>
             <div class="cart-row-right-sum">
                 <p class="cart-row-right-title">Общая стоимость</p>
-                <p class="cart-row-right-product-price">{{ all_products_price_discounted }} ₽</p>
+                <p id="all_products_price_discounted" class="cart-row-right-product-price">{{ all_products_price_discounted }} ₽</p>
             </div>
             <div class="cart-row-right-btns">
                 <a href="{% url 'cart_clear' %}" class="cart-row-right-btns-clear">Очистить корзину</a>

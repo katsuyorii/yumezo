@@ -470,6 +470,28 @@ class CartClearView(View):
     
 
 '''
+    Класс-представление для изменения корзины
+'''   
+class CartChangeView(View):
+    def get(self, request, *args, **kwargs):
+        new_amount = int(request.GET.get('amount'))
+        cart_pk = request.GET.get('cart_pk')
+
+        selected_cart = get_object_or_404(Cart, pk=cart_pk)
+        selected_cart.amount = new_amount
+        selected_cart.save()
+
+        all_carts = Cart.objects.filter(user=self.request.user).select_related('product__category')
+        total_price = calculate_total_cart_price(all_carts)
+        total_sale = calculate_total_cart_sale(all_carts)
+        all_products_price_discounted = total_price - total_sale
+        total_price_not_sale = selected_cart.total_price_not_sale()
+        total_price_sale = selected_cart.total_price_sale()
+
+        return JsonResponse({'all_products_price': total_price, 'all_products_sale': total_sale, 'all_products_price_discounted': all_products_price_discounted, 'total_price_not_sale': total_price_not_sale, 'total_price_sale': total_price_sale}) 
+
+
+'''
     Класс-представление для истории заказов пользователей
 '''
 class OrdersUserView(ListView):
